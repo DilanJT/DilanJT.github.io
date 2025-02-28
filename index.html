@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jtfusion</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            margin: 0 1rem 1rem;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem;
+            display: block;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .email-form {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .email-input {
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 400px;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+        
+        .submit-button {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .submit-button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Game Styles */
+        .game-section {
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .game-title {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .game-description {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+        
+        #game-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        #player {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ffeb3b;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+        }
+        
+        .obstacle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff5252;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .coin {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
+        }
+        
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+        
+        #start-game {
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        #start-game:hover {
+            background: #43a047;
+        }
+        
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .countdown-item {
+                margin: 0 0.5rem 1rem;
+                min-width: 60px;
+            }
+            
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+            
+            #game-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Coming Soon</h1>
+        <h2>Our Awesome Website is Under Construction</h2>
+        
+        <p>We're working hard to bring you something amazing. Stay tuned for our launch!</p>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <span id="days" class="countdown-number">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span id="hours" class="countdown-number">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span id="minutes" class="countdown-number">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+                <span id="seconds" class="countdown-number">00</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+        
+        <form class="email-form">
+            <input type="email" placeholder="Enter your email for updates" class="email-input" required>
+            <button type="submit" class="submit-button">Notify Me</button>
+        </form>
+        
+        <div class="social-icons">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">in</a>
+            <a href="#" class="social-icon">ig</a>
+        </div>
+    </div>
+    
+    <div class="game-section">
+        <h3 class="game-title">While You Wait, Play a Mini Game!</h3>
+        <p class="game-description">Move with your mouse or touch to collect green coins and avoid red obstacles. How many can you collect?</p>
+        
+        <div id="game-container">
+            <div id="player"></div>
+        </div>
+        
+        <div class="game-stats">
+            <div>Score: <span id="score">0</span></div>
+            <div>Time: <span id="time">30</span>s</div>
+        </div>
+        
+        <button id="start-game">Start Game</button>
+    </div>
+
+    <script>
+        // Countdown Timer
+        const countDownDate = new Date();
+        countDownDate.setDate(countDownDate.getDate() + 30); // 30 days from now
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Email Form
+        const emailForm = document.querySelector('.email-form');
+        emailForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailInput = document.querySelector('.email-input');
+            alert(`Thank you! We'll notify ${emailInput.value} when we launch.`);
+            emailInput.value = '';
+        });
+        
+        // Mini Game
+        const gameContainer = document.getElementById('game-container');
+        const player = document.getElementById('player');
+        const scoreElement = document.getElementById('score');
+        const timeElement = document.getElementById('time');
+        const startButton = document.getElementById('start-game');
+        
+        let score = 0;
+        let timeLeft = 30;
+        let gameInterval;
+        let obstacleInterval;
+        let coinInterval;
+        let isGameActive = false;
+        let obstacles = [];
+        let coins = [];
+        
+        // Set player initial position
+        const containerRect = gameContainer.getBoundingClientRect();
+        player.style.left = containerRect.width / 2 + 'px';
+        player.style.top = containerRect.height / 2 + 'px';
+        
+        // Move player with mouse or touch
+        function movePlayer(e) {
+            if (!isGameActive) return;
+            
+            const rect = gameContainer.getBoundingClientRect();
+            let x, y;
+            
+            if (e.type === 'mousemove') {
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            } else if (e.type === 'touchmove') {
+                e.preventDefault();
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            }
+            
+            // Ensure player stays within bounds
+            x = Math.max(15, Math.min(x, rect.width - 15));
+            y = Math.max(15, Math.min(y, rect.height - 15));
+            
+            player.style.left = x + 'px';
+            player.style.top = y + 'px';
+        }
+        
+        // Create obstacle
+        function createObstacle() {
+            if (!isGameActive) return;
+            
+            const obstacle = document.createElement('div');
+            obstacle.className = 'obstacle';
+            
+            const rect = gameContainer.getBoundingClientRect();
+            const x = Math.random() * rect.width;
+            const y = Math.random() * rect.height;
+            
+            obstacle.style.left = x + 'px';
+            obstacle.style.top = y + 'px';
+            
+            gameContainer.appendChild(obstacle);
+            obstacles.push(obstacle);
+            
+            // Remove obstacle after some time
+            setTimeout(() => {
+                if (obstacle.parentNode) {
+                    obstacle.parentNode.removeChild(obstacle);
+                }
+                obstacles = obstacles.filter(o => o !== obstacle);
+            }, 3000);
+        }
+        
+        // Create coin
+        function createCoin() {
+            if (!isGameActive) return;
+            
+            const coin = document.createElement('div');
+            coin.className = 'coin';
+            
+            const rect = gameContainer.getBoundingClientRect();
+            const x = Math.random() * rect.width;
+            const y = Math.random() * rect.height;
+            
+            coin.style.left = x + 'px';
+            coin.style.top = y + 'px';
+            
+            gameContainer.appendChild(coin);
+            coins.push(coin);
+            
+            // Remove coin after some time if not collected
+            setTimeout(() => {
+                if (coin.parentNode) {
+                    coin.parentNode.removeChild(coin);
+                }
+                coins = coins.filter(c => c !== coin);
+            }, 5000);
+        }
+        
+        // Check collisions
+        function checkCollisions() {
+            if (!isGameActive) return;
+            
+            const playerRect = player.getBoundingClientRect();
+            
+            // Check obstacle collisions
+            obstacles.forEach(obstacle => {
+                const obstacleRect = obstacle.getBoundingClientRect();
+                
+                if (
+                    playerRect.left < obstacleRect.right &&
+                    playerRect.right > obstacleRect.left &&
+                    playerRect.top < obstacleRect.bottom &&
+                    playerRect.bottom > obstacleRect.top
+                ) {
+                    // Collision with obstacle
+                    score = Math.max(0, score - 5);
+                    scoreElement.textContent = score;
+                    
+                    // Remove the obstacle
+                    if (obstacle.parentNode) {
+                        obstacle.parentNode.removeChild(obstacle);
+                    }
+                    obstacles = obstacles.filter(o => o !== obstacle);
+                    
+                    // Visual feedback
+                    player.style.backgroundColor = '#ff0000';
+                    setTimeout(() => {
+                        player.style.backgroundColor = '#ffeb3b';
+                    }, 200);
+                }
+            });
+            
+            // Check coin collisions
+            coins.forEach(coin => {
+                const coinRect = coin.getBoundingClientRect();
+                
+                if (
+                    playerRect.left < coinRect.right &&
+                    playerRect.right > coinRect.left &&
+                    playerRect.top < coinRect.bottom &&
+                    playerRect.bottom > coinRect.top
+                ) {
+                    // Collision with coin
+                    score += 10;
+                    scoreElement.textContent = score;
+                    
+                    // Remove the coin
+                    if (coin.parentNode) {
+                        coin.parentNode.removeChild(coin);
+                    }
+                    coins = coins.filter(c => c !== coin);
+                    
+                    // Visual feedback
+                    player.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                    setTimeout(() => {
+                        player.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 200);
+                }
+            });
+        }
+        
+        // Update game time
+        function updateTime() {
+            if (!isGameActive) return;
+            
+            timeLeft--;
+            timeElement.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+        
+        // Start game
+        function startGame() {
+            if (isGameActive) return;
+            
+            // Reset game state
+            score = 0;
+            timeLeft = 30;
+            scoreElement.textContent = score;
+            timeElement.textContent = timeLeft;
+            
+            // Clear any existing elements
+            obstacles.forEach(obstacle => {
+                if (obstacle.parentNode) {
+                    obstacle.parentNode.removeChild(obstacle);
+                }
+            });
+            obstacles = [];
+            
+            coins.forEach(coin => {
+                if (coin.parentNode) {
+                    coin.parentNode.removeChild(coin);
+                }
+            });
+            coins = [];
+            
+            // Set game as active
+            isGameActive = true;
+            startButton.textContent = "Game in progress...";
+            
+            // Start intervals
+            gameInterval = setInterval(updateTime, 1000);
+            obstacleInterval = setInterval(createObstacle, 1200);
+            coinInterval = setInterval(createCoin, 800);
+            
+            // Start collision detection
+            setInterval(checkCollisions, 100);
+            
+            // Create initial coins
+            for (let i = 0; i < 3; i++) {
+                createCoin();
+            }
+        }
+        
+        // End game
+        function endGame() {
+            isGameActive = false;
+            
+            clearInterval(gameInterval);
+            clearInterval(obstacleInterval);
+            clearInterval(coinInterval);
+            
+            alert(`Game Over! Your score: ${score}`);
+            startButton.textContent = "Play Again";
+        }
+        
+        // Event listeners
+        startButton.addEventListener('click', startGame);
+        gameContainer.addEventListener('mousemove', movePlayer);
+        gameContainer.addEventListener('touchmove', movePlayer, { passive: false });
+        
+        // Prevent scrolling when touching the game area on mobile
+        gameContainer.addEventListener('touchstart', function(e) {
+            if (isGameActive) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
