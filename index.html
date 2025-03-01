@@ -3,519 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jtfusion</title>
-    <style>
-        /* Global Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            text-align: center;
-        }
-        
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
-        
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        
-        p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: center;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-        
-        .countdown-item {
-            margin: 0 1rem 1rem;
-            text-align: center;
-            min-width: 80px;
-        }
-        
-        .countdown-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 0.5rem;
-            display: block;
-            width: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .countdown-label {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .email-form {
-            margin: 2rem 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .email-input {
-            padding: 0.8rem 1.2rem;
-            font-size: 1rem;
-            border: none;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 400px;
-            outline: none;
-            margin-bottom: 1rem;
-        }
-        
-        .submit-button {
-            padding: 0.8rem 2rem;
-            font-size: 1rem;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .submit-button:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-        
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-        
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 0 0.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .social-icon:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        /* Game Styles */
-        .game-section {
-            margin-top: 3rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            width: 100%;
-        }
-        
-        .game-title {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        
-        .game-description {
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-        }
-        
-        #game-container {
-            width: 100%;
-            height: 300px;
-            position: relative;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        #player {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: #ffeb3b;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.1s linear;
-            box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
-        }
-        
-        .obstacle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ff5252;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .coin {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background-color: #4caf50;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
-        }
-        
-        .game-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            font-size: 1rem;
-        }
-        
-        #start-game {
-            padding: 0.5rem 1.5rem;
-            font-size: 1rem;
-            background: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-        
-        #start-game:hover {
-            background: #43a047;
-        }
-        
-        @media (max-width: 500px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            h2 {
-                font-size: 1.3rem;
-            }
-            
-            .countdown-item {
-                margin: 0 0.5rem 1rem;
-                min-width: 60px;
-            }
-            
-            .countdown-number {
-                font-size: 1.8rem;
-            }
-            
-            #game-container {
-                height: 250px;
-            }
-        }
-    </style>
+    <title>JTFusion | Dilan Jayamanne</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Coming Soon</h1>
-        <h2>Our Awesome Website is Under Construction</h2>
-        
-        <p>We're working hard to bring you something amazing. Stay tuned for our launch!</p>
-        
-        <div class="social-icons">
-            <a href="https://x.com/dilan_jt" target="_blank" class="social-icon">x</a>
-            <a href="https://www.youtube.com/@DilanTech" target="_blank" class="social-icon">yt</a>
-            <a href="https://www.linkedin.com/in/dilanjt/" target="_blank" class="social-icon">in</a>
-            <!-- <a href="#" target="_blank" class="social-icon">ig</a> -->
+<body class="light-mode">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/" class="active">Home</a></li>
+                    <li><a href="/articles/">Articles</a></li>
+                    <li><a href="/dilanjt/">Portfolio</a></li>
+                    <li><a href="/timeline/">Timeline</a></li>
+                </ul>
+                <div class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-switch">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
         </div>
-    </div>
-    
-    <div class="game-section">
-        <h3 class="game-title">While You Wait, Play a Mini Game!</h3>
-        <p class="game-description">Move with your mouse or touch to collect green coins and avoid red obstacles. How many can you collect?</p>
-        
-        <div id="game-container">
-            <div id="player"></div>
-        </div>
-        
-        <div class="game-stats">
-            <div>Score: <span id="score">0</span></div>
-            <div>Time: <span id="time">30</span>s</div>
-        </div>
-        
-        <button id="start-game">Start Game</button>
-    </div>
+    </header>
 
-    <script>
-        // Mini Game
-        const gameContainer = document.getElementById('game-container');
-        const player = document.getElementById('player');
-        const scoreElement = document.getElementById('score');
-        const timeElement = document.getElementById('time');
-        const startButton = document.getElementById('start-game');
-        
-        let score = 0;
-        let timeLeft = 30;
-        let gameInterval;
-        let obstacleInterval;
-        let coinInterval;
-        let isGameActive = false;
-        let obstacles = [];
-        let coins = [];
-        
-        // Set player initial position
-        const containerRect = gameContainer.getBoundingClientRect();
-        player.style.left = containerRect.width / 2 + 'px';
-        player.style.top = containerRect.height / 2 + 'px';
-        
-        // Move player with mouse or touch
-        function movePlayer(e) {
-            if (!isGameActive) return;
-            
-            const rect = gameContainer.getBoundingClientRect();
-            let x, y;
-            
-            if (e.type === 'mousemove') {
-                x = e.clientX - rect.left;
-                y = e.clientY - rect.top;
-            } else if (e.type === 'touchmove') {
-                e.preventDefault();
-                x = e.touches[0].clientX - rect.left;
-                y = e.touches[0].clientY - rect.top;
-            }
-            
-            // Ensure player stays within bounds
-            x = Math.max(15, Math.min(x, rect.width - 15));
-            y = Math.max(15, Math.min(y, rect.height - 15));
-            
-            player.style.left = x + 'px';
-            player.style.top = y + 'px';
-        }
-        
-        // Create obstacle
-        function createObstacle() {
-            if (!isGameActive) return;
-            
-            const obstacle = document.createElement('div');
-            obstacle.className = 'obstacle';
-            
-            const rect = gameContainer.getBoundingClientRect();
-            const x = Math.random() * rect.width;
-            const y = Math.random() * rect.height;
-            
-            obstacle.style.left = x + 'px';
-            obstacle.style.top = y + 'px';
-            
-            gameContainer.appendChild(obstacle);
-            obstacles.push(obstacle);
-            
-            // Remove obstacle after some time
-            setTimeout(() => {
-                if (obstacle.parentNode) {
-                    obstacle.parentNode.removeChild(obstacle);
-                }
-                obstacles = obstacles.filter(o => o !== obstacle);
-            }, 3000);
-        }
-        
-        // Create coin
-        function createCoin() {
-            if (!isGameActive) return;
-            
-            const coin = document.createElement('div');
-            coin.className = 'coin';
-            
-            const rect = gameContainer.getBoundingClientRect();
-            const x = Math.random() * rect.width;
-            const y = Math.random() * rect.height;
-            
-            coin.style.left = x + 'px';
-            coin.style.top = y + 'px';
-            
-            gameContainer.appendChild(coin);
-            coins.push(coin);
-            
-            // Remove coin after some time if not collected
-            setTimeout(() => {
-                if (coin.parentNode) {
-                    coin.parentNode.removeChild(coin);
-                }
-                coins = coins.filter(c => c !== coin);
-            }, 5000);
-        }
-        
-        // Check collisions
-        function checkCollisions() {
-            if (!isGameActive) return;
-            
-            const playerRect = player.getBoundingClientRect();
-            
-            // Check obstacle collisions
-            obstacles.forEach(obstacle => {
-                const obstacleRect = obstacle.getBoundingClientRect();
-                
-                if (
-                    playerRect.left < obstacleRect.right &&
-                    playerRect.right > obstacleRect.left &&
-                    playerRect.top < obstacleRect.bottom &&
-                    playerRect.bottom > obstacleRect.top
-                ) {
-                    // Collision with obstacle
-                    score = Math.max(0, score - 5);
-                    scoreElement.textContent = score;
-                    
-                    // Remove the obstacle
-                    if (obstacle.parentNode) {
-                        obstacle.parentNode.removeChild(obstacle);
-                    }
-                    obstacles = obstacles.filter(o => o !== obstacle);
-                    
-                    // Visual feedback
-                    player.style.backgroundColor = '#ff0000';
-                    setTimeout(() => {
-                        player.style.backgroundColor = '#ffeb3b';
-                    }, 200);
-                }
-            });
-            
-            // Check coin collisions
-            coins.forEach(coin => {
-                const coinRect = coin.getBoundingClientRect();
-                
-                if (
-                    playerRect.left < coinRect.right &&
-                    playerRect.right > coinRect.left &&
-                    playerRect.top < coinRect.bottom &&
-                    playerRect.bottom > coinRect.top
-                ) {
-                    // Collision with coin
-                    score += 10;
-                    scoreElement.textContent = score;
-                    
-                    // Remove the coin
-                    if (coin.parentNode) {
-                        coin.parentNode.removeChild(coin);
-                    }
-                    coins = coins.filter(c => c !== coin);
-                    
-                    // Visual feedback
-                    player.style.transform = 'translate(-50%, -50%) scale(1.2)';
-                    setTimeout(() => {
-                        player.style.transform = 'translate(-50%, -50%) scale(1)';
-                    }, 200);
-                }
-            });
-        }
-        
-        // Update game time
-        function updateTime() {
-            if (!isGameActive) return;
-            
-            timeLeft--;
-            timeElement.textContent = timeLeft;
-            
-            if (timeLeft <= 0) {
-                endGame();
-            }
-        }
-        
-        // Start game
-        function startGame() {
-            if (isGameActive) return;
-            
-            // Reset game state
-            score = 0;
-            timeLeft = 30;
-            scoreElement.textContent = score;
-            timeElement.textContent = timeLeft;
-            
-            // Clear any existing elements
-            obstacles.forEach(obstacle => {
-                if (obstacle.parentNode) {
-                    obstacle.parentNode.removeChild(obstacle);
-                }
-            });
-            obstacles = [];
-            
-            coins.forEach(coin => {
-                if (coin.parentNode) {
-                    coin.parentNode.removeChild(coin);
-                }
-            });
-            coins = [];
-            
-            // Set game as active
-            isGameActive = true;
-            startButton.textContent = "Game in progress...";
-            
-            // Start intervals
-            gameInterval = setInterval(updateTime, 1000);
-            obstacleInterval = setInterval(createObstacle, 1200);
-            coinInterval = setInterval(createCoin, 800);
-            
-            // Start collision detection
-            setInterval(checkCollisions, 100);
-            
-            // Create initial coins
-            for (let i = 0; i < 3; i++) {
-                createCoin();
-            }
-        }
-        
-        // End game
-        function endGame() {
-            isGameActive = false;
-            
-            clearInterval(gameInterval);
-            clearInterval(obstacleInterval);
-            clearInterval(coinInterval);
-            
-            alert(`Game Over! Your score: ${score}`);
-            startButton.textContent = "Play Again";
-        }
-        
-        // Event listeners
-        startButton.addEventListener('click', startGame);
-        gameContainer.addEventListener('mousemove', movePlayer);
-        gameContainer.addEventListener('touchmove', movePlayer, { passive: false });
-        
-        // Prevent scrolling when touching the game area on mobile
-        gameContainer.addEventListener('touchstart', function(e) {
-            if (isGameActive) e.preventDefault();
-        }, { passive: false });
-    </script>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Dilan <span class="accent">Jayamanne</span></h1>
+                <h2>Software Engineer | Python, Rust</h2>
+                <p>An organized and dedicated developer with a strong focus on breaking down complex tasks and tackling bugs with persistence.</p>
+                <div class="hero-buttons">
+                    <a href="/dilanjt/" class="btn primary">View Portfolio</a>
+                    <a href="#contact" class="btn secondary">Contact Me</a>
+                </div>
+                <div class="social-links">
+                    <a href="https://linkedin.com/in/dilanjt/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/DilanJT" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://youtube.com/@DilanTech" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="code-block">
+                    <pre><code>
+class Developer {
+  constructor() {
+    this.name = "Dilan Jayamanne";
+    this.role = "Software Engineer";
+    this.skills = ["Python", "Rust", "OOP"];
+    this.experience = "3+ years";
+  }
+  
+  solveProblems() {
+    return "Converting challenges into results";
+  }
+}
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">About <span class="accent">Me</span></h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I'm a software engineer with expertise in Python and Rust, focusing on backend development, IoT connectivity, and distributed systems. I prioritize well-tested code and continuous skill advancements through consistent learning and research.</p>
+                    <p>Currently working as an Associate Software Engineer at Atlas Populi, I specialize in Bluetooth connectivity and backend API development. My background includes experience with Django, Flask, Flutter, and various database technologies.</p>
+                    <div class="tech-stack">
+                        <span class="tech-item">Python</span>
+                        <span class="tech-item">Rust</span>
+                        <span class="tech-item">Django</span>
+                        <span class="tech-item">Flask</span>
+                        <span class="tech-item">Flutter</span>
+                        <span class="tech-item">PostgreSQL</span>
+                        <span class="tech-item">Redis</span>
+                        <span class="tech-item">Docker</span>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">3+</span>
+                        <span class="stat-text">Years Experience</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">10+</span>
+                        <span class="stat-text">Projects Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">2</span>
+                        <span class="stat-text">Research Publications</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience">
+        <div class="container">
+            <h2 class="section-title">Core <span class="accent">Experience</span></h2>
+            <div class="experience-grid">
+                <div class="experience-card">
+                    <div class="experience-icon"><i class="fas fa-bluetooth-b"></i></div>
+                    <h3>Bluetooth Connectivity</h3>
+                    <p>Implemented Bluetooth services for IoT devices working both as peripheral and central devices, ensuring cross-platform compatibility.</p>
+                </div>
+                <div class="experience-card">
+                    <div class="experience-icon"><i class="fas fa-server"></i></div>
+                    <h3>Backend APIs</h3>
+                    <p>Developed scalable RESTful APIs using Django and Flask, with custom authentication middlewares and policy enforcement.</p>
+                </div>
+                <div class="experience-card">
+                    <div class="experience-icon"><i class="fas fa-cogs"></i></div>
+                    <h3>Concurrent Systems</h3>
+                    <p>Worked on memory-safe concurrent services for IoT device provisioning using Rust, implementing reliable solutions.</p>
+                </div>
+                <div class="experience-card">
+                    <div class="experience-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Monitoring & Metrics</h3>
+                    <p>Implemented Prometheus instrumentation to extract time-series data using Rust for efficient system monitoring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Articles Section -->
+    <section class="latest-articles">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Latest <span class="accent">Articles</span></h2>
+                <a href="/articles/" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="articles-grid">
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">March 1, 2025</span>
+                            <span class="article-category">Rust</span>
+                        </div>
+                        <h3 class="article-title">Memory Safety in Concurrent Rust Applications</h3>
+                        <p class="article-excerpt">Exploring Rust's memory safety guarantees when building concurrent applications for IoT devices.</p>
+                        <a href="/articles/memory-safety-rust" class="read-more">Read More</a>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">February 20, 2025</span>
+                            <span class="article-category">Python</span>
+                        </div>
+                        <h3 class="article-title">Building Scalable Django REST APIs</h3>
+                        <p class="article-excerpt">Best practices for developing high-performance Django REST Framework APIs with custom authentication.</p>
+                        <a href="/articles/django-rest-apis" class="read-more">Read More</a>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">February 10, 2025</span>
+                            <span class="article-category">IoT</span>
+                        </div>
+                        <h3 class="article-title">Bluetooth 5.2 for IoT Device Provisioning</h3>
+                        <p class="article-excerpt">How to leverage Bluetooth 5.2 features for efficient and secure IoT device provisioning.</p>
+                        <a href="/articles/bluetooth-iot-provisioning" class="read-more">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get in <span class="accent">Touch</span></h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Location</h3>
+                            <p>JaEla, Pamunugama, Sri Lanka</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>0766109200</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>dicmandilan@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://linkedin.com/in/dilanjt/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/DilanJT" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://youtube.com/@DilanTech" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                    <p>Breaking down complex tasks and converting challenges into results.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/articles/">Articles</a></li>
+                        <li><a href="/dilanjt/">Portfolio</a></li>
+                        <li><a href="/timeline/">Timeline</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-connect">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://linkedin.com/in/dilanjt/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://github.com/DilanJT" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="https://youtube.com/@DilanTech" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 JTFusion. All rights reserved. Designed by Dilan Jayamanne.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 </html>

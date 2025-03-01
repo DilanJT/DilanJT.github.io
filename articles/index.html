@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles | JTFusion</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/articles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/articles/" class="active">Articles</a></li>
+                    <li><a href="/dilanjt/">Portfolio</a></li>
+                    <li><a href="/timeline/">Timeline</a></li>
+                </ul>
+                <div class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-switch">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Articles Hero -->
+    <section class="articles-hero">
+        <div class="container">
+            <h1>Tech <span class="accent">Articles</span></h1>
+            <p>Insights, tutorials, and thoughts on software engineering, IoT, and more</p>
+            
+            <div class="articles-search">
+                <div class="search-container">
+                    <input type="text" placeholder="Search articles..." id="search-input">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-container">
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="rust">Rust</option>
+                        <option value="python">Python</option>
+                        <option value="iot">IoT</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="backend">Backend</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="featured-article">
+        <div class="container">
+            <div class="article-featured">
+                <div class="featured-label">Featured</div>
+                <div class="featured-content">
+                    <div class="featured-image">
+                        <img src="https://via.placeholder.com/800x500" alt="Featured article thumbnail">
+                    </div>
+                    <div class="featured-details">
+                        <div class="article-meta">
+                            <span class="article-date">March 1, 2025</span>
+                            <span class="article-category">Rust</span>
+                            <span class="article-read-time">8 min read</span>
+                        </div>
+                        <h2 class="featured-title">Memory Safety in Concurrent Rust Applications</h2>
+                        <p class="featured-excerpt">Rust's ownership model and borrow checker provide powerful guarantees for memory safety and thread safety. This article explores how to leverage these features when building concurrent applications for IoT devices, with practical examples and best practices.</p>
+                        <a href="/articles/memory-safety-rust" class="btn primary">Read Article</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Articles -->
+    <section class="all-articles">
+        <div class="container">
+            <h2 class="section-title">Latest <span class="accent">Articles</span></h2>
+            
+            <div class="articles-grid">
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">March 1, 2025</span>
+                            <span class="article-category">Rust</span>
+                        </div>
+                        <h3 class="article-title">Memory Safety in Concurrent Rust Applications</h3>
+                        <p class="article-excerpt">Exploring Rust's memory safety guarantees when building concurrent applications for IoT devices.</p>
+                        <a href="/articles/memory-safety-rust" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">February 20, 2025</span>
+                            <span class="article-category">Python</span>
+                        </div>
+                        <h3 class="article-title">Building Scalable Django REST APIs</h3>
+                        <p class="article-excerpt">Best practices for developing high-performance Django REST Framework APIs with custom authentication.</p>
+                        <a href="/articles/django-rest-apis" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">February 10, 2025</span>
+                            <span class="article-category">IoT</span>
+                        </div>
+                        <h3 class="article-title">Bluetooth 5.2 for IoT Device Provisioning</h3>
+                        <p class="article-excerpt">How to leverage Bluetooth 5.2 features for efficient and secure IoT device provisioning.</p>
+                        <a href="/articles/bluetooth-iot-provisioning" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">January 28, 2025</span>
+                            <span class="article-category">Backend</span>
+                        </div>
+                        <h3 class="article-title">Redis for Background Tasks and Cron Jobs</h3>
+                        <p class="article-excerpt">Implementing efficient background processing using Redis and scheduled tasks in Python and Rust.</p>
+                        <a href="/articles/redis-background-tasks" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">January 15, 2025</span>
+                            <span class="article-category">Mobile</span>
+                        </div>
+                        <h3 class="article-title">Cross-Platform Bluetooth Connectivity with Flutter</h3>
+                        <p class="article-excerpt">Building robust BLE applications that work seamlessly on both Android and iOS platforms.</p>
+                        <a href="/articles/flutter-bluetooth-connectivity" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">January 5, 2025</span>
+                            <span class="article-category">DevOps</span>
+                        </div>
+                        <h3 class="article-title">Monitoring Rust Applications with Prometheus</h3>
+                        <p class="article-excerpt">Setting up comprehensive metrics and monitoring for Rust-based backend services.</p>
+                        <a href="/articles/prometheus-rust-monitoring" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">December 20, 2024</span>
+                            <span class="article-category">Python</span>
+                        </div>
+                        <h3 class="article-title">Custom Authentication Middleware in Django</h3>
+                        <p class="article-excerpt">Implementing JWT-based authentication with custom policies using Python decorators.</p>
+                        <a href="/articles/django-custom-auth" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">December 10, 2024</span>
+                            <span class="article-category">IoT</span>
+                        </div>
+                        <h3 class="article-title">Introduction to Matter Connectivity for Smart Homes</h3>
+                        <p class="article-excerpt">Understanding the new Matter protocol and its benefits for IoT device interoperability.</p>
+                        <a href="/articles/matter-protocol-intro" class="read-more">Read More</a>
+                    </div>
+                </article>
+
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">November 25, 2024</span>
+                            <span class="article-category">Rust</span>
+                        </div>
+                        <h3 class="article-title">Error Handling Patterns in Rust</h3>
+                        <p class="article-excerpt">Effective approaches to error management in Rust applications for robust systems.</p>
+                        <a href="/articles/rust-error-handling" class="read-more">Read More</a>
+                    </div>
+                </article>
+            </div>
+
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <span class="page-dots">...</span>
+                <a href="#" class="page-link">10</a>
+                <a href="#" class="page-next">Next <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscribe to my <span class="accent">Newsletter</span></h2>
+                <p>Get the latest articles and tech updates delivered straight to your inbox.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                    <p>Breaking down complex tasks and converting challenges into results.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/articles/">Articles</a></li>
+                        <li><a href="/dilanjt/">Portfolio</a></li>
+                        <li><a href="/timeline/">Timeline</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-connect">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://linkedin.com/in/dilanjt/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://github.com/DilanJT" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="https://youtube.com/@DilanTech" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 JTFusion. All rights reserved. Designed by Dilan Jayamanne.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/theme.js"></script>
+</body>
+</html>

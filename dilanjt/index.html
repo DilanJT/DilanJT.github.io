@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Dilan Jayamanne</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/portfolio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/articles/">Articles</a></li>
+                    <li><a href="/dilanjt/" class="active">Portfolio</a></li>
+                    <li><a href="/timeline/">Timeline</a></li>
+                </ul>
+                <div class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-switch">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Portfolio Hero -->
+    <section class="portfolio-hero">
+        <div class="container">
+            <h1>My <span class="accent">Portfolio</span></h1>
+            <p>A showcase of my technical skills, projects, and professional experience</p>
+        </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    <section class="work-experience">
+        <div class="container">
+            <h2 class="section-title">Work <span class="accent">Experience</span></h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">
+                        <span>Jan 2024 - Present</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Associate Software Engineer</h3>
+                        <h4>Atlas Populi Pvt.</h4>
+                        <div class="responsibilities">
+                            <ul>
+                                <li>Implemented a bluetooth service which streamlined device connectivity and works both as a peripheral and a central device.</li>
+                                <li>Worked on concurrent memory safe gatt services, creating reliable solutions for provisioning of IoT devices via smartphones using Rust.</li>
+                                <li>Ensured both Android and iOS connectivity, supporting a wider customer base.</li>
+                                <li>Researched Matter connectivity and QR code provisioning technologies.</li>
+                                <li>Contributed to Rust scripts for data team and backend team utilizing background tasks with Redis and cron jobs.</li>
+                                <li>Implemented Prometheus instrumentation to extract time series data using Rust.</li>
+                                <li>Developed scalable backend APIs in Python.</li>
+                                <li>Containerized Rust services using Docker.</li>
+                            </ul>
+                        </div>
+                        <div class="tech-used">
+                            <span class="tech-badge">Rust</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Bluetooth</span>
+                            <span class="tech-badge">Redis</span>
+                            <span class="tech-badge">Prometheus</span>
+                            <span class="tech-badge">Docker</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">
+                        <span>July 2023 - Jan 2024</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Software Engineer Intern (Backend)</h3>
+                        <h4>Atlas Populi Pvt.</h4>
+                        <div class="responsibilities">
+                            <ul>
+                                <li>Utilized OOP principles and class based views for developing back-end RESTful APIs.</li>
+                                <li>Enforced customized policies using Python decorators and implemented custom JWT authentication middlewares.</li>
+                                <li>Conducted R&D on Go Gin framework for authentication middlewares.</li>
+                            </ul>
+                        </div>
+                        <div class="tech-used">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">OOP</span>
+                            <span class="tech-badge">REST APIs</span>
+                            <span class="tech-badge">JWT Auth</span>
+                            <span class="tech-badge">Go</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">
+                        <span>June 2021 - May 2022</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Software Engineer Intern</h3>
+                        <h4>Vetstoria</h4>
+                        <div class="responsibilities">
+                            <ul>
+                                <li>Conducted CI/CD solution evaluation on Bitbucket pipelines.</li>
+                                <li>Created and maintained API documentation using Swagger and OpenAPI tools.</li>
+                                <li>Developed and maintained reusable VueJS components, enhancing UI consistency and performance.</li>
+                                <li>Implemented shell scripts for efficient tracking of pull requests in Bitbucket.</li>
+                            </ul>
+                        </div>
+                        <div class="tech-used">
+                            <span class="tech-badge">VueJS</span>
+                            <span class="tech-badge">CI/CD</span>
+                            <span class="tech-badge">OpenAPI</span>
+                            <span class="tech-badge">Shell Scripting</span>
+                            <span class="tech-badge">Bitbucket</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills">
+        <div class="container">
+            <h2 class="section-title">Technical <span class="accent">Skills</span></h2>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Core Languages</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">Python</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Rust</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Java</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">JavaScript</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-server"></i> Backend Development</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">Django REST Framework</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Flask</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">RESTful APIs</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-mobile-alt"></i> Mobile & IoT</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">Flutter</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Bluetooth Connectivity</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">IoT Development</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Databases & Tools</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">PostgreSQL</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Redis</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">MySQL</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Docker</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured <span class="accent">Projects</span></h2>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400" alt="SyntaxSwap Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>SyntaxSwap</h3>
+                        <p class="project-subtitle">Java to JavaScript Code-To-Code Translator</p>
+                        <p class="project-description">An NLP-based project that utilizes a GraphCodeBERT model where users can input Java source code and convert it to its logical JavaScript equivalent using Relative Positional Encoding Attention Mechanism.</p>
+                        <p class="achievement">Achieved 74 marks and selected to present at IIT's cutting edge and ICIIT conference.</p>
+                        <div class="tech-used">
+                            <span class="tech-badge">PyTorch</span>
+                            <span class="tech-badge">Flask</span>
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">NLP</span>
+                            <span class="tech-badge">GraphCodeBERT</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://doi.org/10.13140/RG.2.2.31887.97445" target="_blank" class="btn secondary">View Publication</a>
+                            <a href="https://github.com/DilanJT" target="_blank" class="btn primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400" alt="Shared Printer Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>Shared Printer</h3>
+                        <p class="project-subtitle">Java Concurrent Project</p>
+                        <p class="project-description">A project focused on understanding basic concurrency concepts, including multi-threading, fixing deadlocks, avoiding starvation, and writing thread-safe code.</p>
+                        <div class="tech-used">
+                            <span class="tech-badge">Java</span>
+                            <span class="tech-badge">Concurrency</span>
+                            <span class="tech-badge">Multi-threading</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/DilanJT" target="_blank" class="btn primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400" alt="Bluetooth IoT Project">
+                    </div>
+                    <div class="project-content">
+                        <h3>Bluetooth IoT Provisioning</h3>
+                        <p class="project-subtitle">Cross-platform IoT Device Connectivity</p>
+                        <p class="project-description">A Rust-based implementation of BLE connectivity services for IoT device provisioning, supporting both Android and iOS platforms with memory-safe GATT services.</p>
+                        <div class="tech-used">
+                            <span class="tech-badge">Rust</span>
+                            <span class="tech-badge">Bluetooth</span>
+                            <span class="tech-badge">IoT</span>
+                            <span class="tech-badge">Android</span>
+                            <span class="tech-badge">iOS</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/DilanJT" target="_blank" class="btn primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="education">
+        <div class="container">
+            <h2 class="section-title">Educational <span class="accent">Background</span></h2>
+            
+            <div class="education-container">
+                <div class="education-item">
+                    <div class="education-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="education-content">
+                        <h3>B.Eng. in Software Engineering</h3>
+                        <p class="institution">Informatics Institute of Technology (affiliated with University of Westminster, UK)</p>
+                        <p class="period">September 2019 - July 2023</p>
+                        <p class="achievement">First Class Honors</p>
+                    </div>
+                </div>
+                
+                <div class="education-item">
+                    <div class="education-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="education-content">
+                        <h3>G.C.E. Advanced Level</h3>
+                        <p class="institution">St. Peter's College, Colombo 04, Negombo branch</p>
+                        <p class="period">Completed August 2019</p>
+                        <p class="achievement">3 Distinctions and a Very Good Pass in Commerce with ICT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                    <p>Breaking down complex tasks and converting challenges into results.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/articles/">Articles</a></li>
+                        <li><a href="/dilanjt/">Portfolio</a></li>
+                        <li><a href="/timeline/">Timeline</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-connect">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://linkedin.com/in/dilanjt/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://github.com/DilanJT" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="https://youtube.com/@DilanTech" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 JTFusion. All rights reserved. Designed by Dilan Jayamanne.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/theme.js"></script>
+</body>
+</html>
