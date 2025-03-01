@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Inotify for Real-time File Monitoring in Linux | JTFusion</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/articles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Article-specific styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .article-header {
+            margin-bottom: 3rem;
+        }
+        
+        .article-header .article-meta {
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .article-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+        }
+        
+        .article-content h2 {
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .article-content h3 {
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-content pre {
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: var(--code-bg);
+            overflow-x: auto;
+        }
+        
+        .article-content code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .article-content p code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+        }
+        
+        .article-content blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent-color);
+            background-color: var(--bg-secondary);
+            font-style: italic;
+        }
+        
+        .inotify-demo {
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .inotify-filesystem {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filesystem-container {
+            flex: 2;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+        }
+        
+        .filesystem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .filesystem-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filesystem-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filesystem-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .filesystem-item:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+        }
+        
+        .filesystem-item.highlight {
+            background-color: rgba(66, 99, 235, 0.1);
+            border-color: var(--primary-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .filesystem-item i {
+            margin-right: 0.5rem;
+        }
+        
+        .inotify-log {
+            flex: 3;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background-color: var(--code-bg);
+            color: var(--text-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .inotify-log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .inotify-log-entries {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .log-entry.show {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .log-entry.create {
+            border-left: 3px solid #37b24d;
+        }
+        
+        .log-entry.modify {
+            border-left: 3px solid #f59f00;
+        }
+        
+        .log-entry.delete {
+            border-left: 3px solid #e03131;
+        }
+        
+        .log-entry .timestamp {
+            color: var(--text-muted);
+            margin-right: 0.5rem;
+        }
+        
+        .log-entry .event {
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .log-entry .event.create {
+            color: #37b24d;
+        }
+        
+        .log-entry .event.modify {
+            color: #f59f00;
+        }
+        
+        .log-entry .event.delete {
+            color: #e03131;
+        }
+        
+        .inotify-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        .inotify-control-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(66, 99, 235, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(66, 99, 235, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(66, 99, 235, 0);
+            }
+        }
+        
+        .related-articles {
+            padding: 5rem 0;
+            background-color: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/articles/" class="active">Articles</a></li>
+                    <li><a href="/dilanjt/">Portfolio</a></li>
+                    <li><a href="/timeline/">Timeline</a></li>
+                </ul>
+                <div class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-switch">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <div class="container">
+        <div class="article-container">
+            <div class="article-header">
+                <div class="article-meta">
+                    <span class="article-date">March 1, 2025</span>
+                    <span class="article-category">Linux</span>
+                    <span class="article-read-time">8 min read</span>
+                </div>
+                <h1 class="article-title">Using Inotify for Real-time File Monitoring in Linux</h1>
+                <div class="article-author">
+                    <img src="https://via.placeholder.com/50" alt="Dilan Jayamanne" class="author-img">
+                    <div class="author-info">
+                        <span class="author-name">Dilan Jayamanne</span>
+                        <span class="author-title">Software Engineer | Python, Rust</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-content">
+                <p>If you're a developer or system administrator working with Linux systems, you've likely encountered scenarios requiring automatic script execution or actions triggered by file events like creation, modification, or deletion. This is where <strong>inotify</strong> comes into play.</p>
+                
+                <h2>What is Inotify?</h2>
+                
+                <p>According to the Linux manual page on inotify:</p>
+                
+                <blockquote>
+                    "The inotify API provides a mechanism for monitoring filesystem events. Inotify can be used to monitor individual files, or to monitor directories. When a directory is monitored, inotify will return events for the directory itself, and for files inside the directory."
+                </blockquote>
+                
+                <p>In simpler terms, inotify allows your applications to "listen" for changes in the filesystem and respond accordingly. It's like having a dedicated observer watching your files and alerting you whenever something changes.</p>
+                
+                <h2>Why Use Inotify?</h2>
+                
+                <p>There are several advantages to using inotify over traditional polling methods:</p>
+                
+                <ul>
+                    <li><strong>Resource Efficiency:</strong> Instead of periodically checking for changes (which can be resource-intensive), inotify only notifies you when something actually happens.</li>
+                    <li><strong>Real-time Notifications:</strong> Get immediate alerts when changes occur, allowing for quicker response times.</li>
+                    <li><strong>Specific Event Monitoring:</strong> You can choose to monitor only specific types of events that matter to your application.</li>
+                </ul>
+                
+                <h2>Interactive Demonstration</h2>
+                
+                <p>Below is an interactive demo showing how inotify monitors a directory. You can trigger various filesystem events and see how inotify responds in real-time:</p>
+                
+                <div class="inotify-demo">
+                    <h3>Inotify Filesystem Monitor</h3>
+                    <div class="inotify-filesystem">
+                        <div class="filesystem-container">
+                            <div class="filesystem-header">
+                                <h4>Directory: /home/user/monitored</h4>
+                                <div class="filesystem-actions">
+                                    <button id="create-file" class="btn secondary">
+                                        <i class="fas fa-plus"></i> Create File
+                                    </button>
+                                    <button id="create-dir" class="btn secondary">
+                                        <i class="fas fa-folder-plus"></i> Create Directory
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="filesystem-items" id="filesystem-items">
+                                <div class="filesystem-item" data-name="config.json">
+                                    <i class="fas fa-file-code"></i> config.json
+                                </div>
+                                <div class="filesystem-item" data-name="data">
+                                    <i class="fas fa-folder"></i> data
+                                </div>
+                                <div class="filesystem-item" data-name="script.sh">
+                                    <i class="fas fa-file-code"></i> script.sh
+                                </div>
+                                <div class="filesystem-item" data-name="README.md">
+                                    <i class="fas fa-file-alt"></i> README.md
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inotify-log">
+                            <div class="inotify-log-header">
+                                <h4>Inotify Events Log</h4>
+                                <button id="clear-log" class="btn secondary">Clear</button>
+                            </div>
+                            <div class="inotify-log-entries" id="log-entries">
+                                <div class="log-entry create show">
+                                    <span class="timestamp">[2025-03-01 10:00:05]</span>
+                                    <span class="event create">CREATE</span>
+                                    <span class="target">inotify_watch started on /home/user/monitored</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inotify-controls">
+                        <div class="inotify-control-group">
+                            <button id="modify-file" class="btn secondary">
+                                <i class="fas fa-edit"></i> Modify File
+                            </button>
+                            <button id="delete-item" class="btn secondary">
+                                <i class="fas fa-trash"></i> Delete Item
+                            </button>
+                        </div>
+                        <div class="inotify-control-group">
+                            <button id="restart-demo" class="btn primary">
+                                <i class="fas fa-redo"></i> Restart Demo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2>A Simple Inotify Script Example</h2>
+                
+                <p>Let's break down a simple shell script example (<code>watch_files.sh</code>) that you can run natively on Linux (Ubuntu/Debian):</p>
+                
+                <pre><code class="language-bash">#!/bin/bash
+
+DIR_TO_WATCH="${1:-.}"
+
+if ! command -v inotifywait >/dev/null 2>&1; then
+    echo "installing inotify-tools first:"
+    sudo apt-get install -y inotify-tools
+fi
+
+inotifywait -m "$DIR_TO_WATCH" -e create |
+while read -r directory events filename; do
+    echo -e "\nNew file created: $filename"
+done</code></pre>
+                
+                <p>Let's explain what this script does:</p>
+                
+                <ul>
+                    <li>The <code>DIR_TO_WATCH</code> variable holds the directory path provided as an argument. If no argument is provided, it defaults to the current directory.</li>
+                    <li>The script checks if inotify is available on your system; if not, it installs the inotify-tools package.</li>
+                    <li>The <code>inotifywait</code> command monitors the specified directory for the specified events (in this case, file creation).</li>
+                </ul>
+                
+                <h2>How to Run the Script</h2>
+                
+                <p>Go to the directory where you want to place this file and run the following commands:</p>
+                
+                <pre><code class="language-bash"># 1) Run this to create the file and then copy paste the code to the file
+nano watch_files.sh
+
+# 2) Make it an executable
+chmod +x watch_files.sh
+
+# 3) Run the file by specifying the directory path to watch
+./watch_files.sh /path/to_watch
+
+# or run without arguments to watch the current directory
+./watch_files.sh
+
+# 4) Create a file in the directory that you have specified.
+touch test123.txt</code></pre>
+                
+                <p>When you create a new file in the monitored directory, you should see a message like:</p>
+                
+                <pre><code class="language-bash">New file created: test123.txt</code></pre>
+                
+                <h2>Real-World Use Cases</h2>
+                
+                <p>Inotify has numerous practical applications in real-world scenarios:</p>
+                
+                <h3>1. Auto-deployment Systems</h3>
+                <p>Monitor a directory for new files and automatically deploy them to a production environment. For example, when a new configuration file is added, the system can restart the corresponding service.</p>
+                
+                <h3>2. Real-time Backup Solutions</h3>
+                <p>Instead of scheduling periodic backups, you can use inotify to trigger backups immediately when files change, ensuring that you always have the most recent version backed up.</p>
+                
+                <h3>3. Log Monitoring</h3>
+                <p>Watch log files for specific events and trigger alerts or other actions when certain conditions are met.</p>
+                
+                <h3>4. Development Tools</h3>
+                <p>Automatically run tests or compilation steps when source files are modified, providing immediate feedback to developers.</p>
+                
+                <h2>Advanced Inotify Usage</h2>
+                
+                <p>The basic example we've shown is just the beginning. The inotify API allows for monitoring a wide range of events:</p>
+                
+                <ul>
+                    <li><strong>IN_ACCESS</strong>: File was accessed</li>
+                    <li><strong>IN_MODIFY</strong>: File was modified</li>
+                    <li><strong>IN_ATTRIB</strong>: Metadata changed (permissions, timestamps, etc.)</li>
+                    <li><strong>IN_CLOSE_WRITE</strong>: File opened for writing was closed</li>
+                    <li><strong>IN_CLOSE_NOWRITE</strong>: File not opened for writing was closed</li>
+                    <li><strong>IN_OPEN</strong>: File was opened</li>
+                    <li><strong>IN_MOVED_FROM</strong>: File was moved from the watched directory</li>
+                    <li><strong>IN_MOVED_TO</strong>: File was moved to the watched directory</li>
+                    <li><strong>IN_CREATE</strong>: File/directory was created</li>
+                    <li><strong>IN_DELETE</strong>: File/directory was deleted</li>
+                    <li><strong>IN_DELETE_SELF</strong>: Watched file/directory was deleted</li>
+                    <li><strong>IN_MOVE_SELF</strong>: Watched file/directory was moved</li>
+                </ul>
+                
+                <p>You can combine multiple events in a single monitoring command:</p>
+                
+                <pre><code class="language-bash">inotifywait -m "$DIR_TO_WATCH" -e create -e modify -e delete |
+while read -r directory events filename; do
+    echo "Event: $events on file: $filename"
+done</code></pre>
+                
+                <h2>Limitations and Considerations</h2>
+                
+                <p>While inotify is powerful, it does have some limitations to keep in mind:</p>
+                
+                <ul>
+                    <li><strong>Inotify Watches Limit</strong>: There's a system-wide limit on the number of watches that can be established. Check your current limit with <code>cat /proc/sys/fs/inotify/max_user_watches</code>.</li>
+                    <li><strong>Network Filesystems</strong>: Inotify doesn't work reliably on network filesystems like NFS or CIFS.</li>
+                    <li><strong>Recursive Monitoring</strong>: Inotify doesn't automatically monitor subdirectories. You need to set up watches for each subdirectory or use a recursive implementation.</li>
+                    <li><strong>Event Coalescing</strong>: If multiple events occur in rapid succession, they might be coalesced into a single event notification.</li>
+                </ul>
+                
+                <h2>Conclusion</h2>
+                
+                <p>Inotify is an essential tool in the Linux system administrator's and developer's toolkit. By providing real-time file system event notifications, it enables more efficient and responsive applications.</p>
+                
+                <p>Whether you're building a simple file watching script or a complex auto-deployment system, understanding how to leverage inotify can significantly improve the performance and capabilities of your Linux applications.</p>
+                
+                <p>Try out the interactive demo above to get a feel for how inotify works, and experiment with the provided script to see it in action on your own system!</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Articles -->
+    <section class="related-articles">
+        <div class="container">
+            <h2 class="section-title">Related <span class="accent">Articles</span></h2>
+            
+            <div class="articles-grid">
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">February 20, 2025</span>
+                            <span class="article-category">Linux</span>
+                        </div>
+                        <h3 class="article-title">Efficient Shell Scripting Techniques for System Administrators</h3>
+                        <p class="article-excerpt">Mastering bash scripting for automated system administration tasks in Linux environments.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">January 15, 2025</span>
+                            <span class="article-category">DevOps</span>
+                        </div>
+                        <h3 class="article-title">Building a Real-time Backup System with Rust and Linux Tools</h3>
+                        <p class="article-excerpt">Implementing a robust, efficient backup solution using modern tools and practices.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <div class="article-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Article thumbnail">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">December 10,, 2024</span>
+                            <span class="article-category">Rust</span>
+                        </div>
+                        <h3 class="article-title">Developing Linux System Utilities with Rust</h3>
+                        <p class="article-excerpt">Creating efficient and memory-safe system tools for Linux environments.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">JT<span class="accent">fusion</span></span>
+                    <p>Breaking down complex tasks and converting challenges into results.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/articles/">Articles</a></li>
+                        <li><a href="/dilanjt/">Portfolio</a></li>
+                        <li><a href="/timeline/">Timeline</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-connect">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="https://linkedin.com/in/dilanjt/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="https://github.com/DilanJT" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="https://youtube.com/@DilanTech" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 JTFusion. All rights reserved. Designed by Dilan Jayamanne.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            hljs.highlightAll();
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script>
+        // Inotify Interactive Demo
+        document.addEventListener('DOMContentLoaded', function() {
+            const filesystemItems = document.getElementById('filesystem-items');
+            const logEntries = document.getElementById('log-entries');
+            const createFileBtn = document.getElementById('create-file');
+            const createDirBtn = document.getElementById('create-dir');
+            const modifyFileBtn = document.getElementById('modify-file');
+            const deleteItemBtn = document.getElementById('delete-item');
+            const clearLogBtn = document.getElementById('clear-log');
+            const restartDemoBtn = document.getElementById('restart-demo');
+            
+            let fileCounter = 1;
+            let dirCounter = 1;
+            
+            // Generate timestamp
+            function getTimestamp() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                
+                return `[${year}-${month}-${day} ${hours}:${minutes}:${seconds}]`;
+            }
+            
+            // Add log entry
+            function addLogEntry(event, target, details = '') {
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${event.toLowerCase()}`;
+                
+                entry.innerHTML = `
+                    <span class="timestamp">${getTimestamp()}</span>
+                    <span class="event ${event.toLowerCase()}">${event}</span>
+                    <span class="target">${target}</span>
+                    ${details ? `<span class="details">(${details})</span>` : ''}
+                `;
+                
+                logEntries.appendChild(entry);
+                
+                // Scroll to bottom
+                logEntries.scrollTop = logEntries.scrollHeight;
+                
+                // Animate entry
+                setTimeout(() => {
+                    entry.classList.add('show');
+                }, 10);
+            }
+            
+            // Create new file
+            createFileBtn.addEventListener('click', function() {
+                const fileName = `new_file_${fileCounter}.txt`;
+                fileCounter++;
+                
+                const fileItem = document.createElement('div');
+                fileItem.className = 'filesystem-item highlight';
+                fileItem.setAttribute('data-name', fileName);
+                fileItem.innerHTML = `<i class="fas fa-file-alt"></i> ${fileName}`;
+                
+                filesystemItems.appendChild(fileItem);
+                
+                // Add log entry
+                addLogEntry('CREATE', fileName);
+                
+                // Remove highlight after animation
+                setTimeout(() => {
+                    fileItem.classList.remove('highlight');
+                }, 3000);
+            });
+            
+            // Create new directory
+            createDirBtn.addEventListener('click', function() {
+                const dirName = `new_dir_${dirCounter}`;
+                dirCounter++;
+                
+                const dirItem = document.createElement('div');
+                dirItem.className = 'filesystem-item highlight';
+                dirItem.setAttribute('data-name', dirName);
+                dirItem.innerHTML = `<i class="fas fa-folder"></i> ${dirName}`;
+                
+                filesystemItems.appendChild(dirItem);
+                
+                // Add log entry
+                addLogEntry('CREATE', dirName, 'directory');
+                
+                // Remove highlight after animation
+                setTimeout(() => {
+                    dirItem.classList.remove('highlight');
+                }, 3000);
+            });
+            
+            // Modify file
+            modifyFileBtn.addEventListener('click', function() {
+                const items = filesystemItems.querySelectorAll('.filesystem-item');
+                let files = [];
+                
+                // Get all files (not directories)
+                items.forEach(item => {
+                    if (item.querySelector('i').classList.contains('fa-file-alt') || 
+                        item.querySelector('i').classList.contains('fa-file-code')) {
+                        files.push(item);
+                    }
+                });
+                
+                if (files.length > 0) {
+                    // Select random file
+                    const randomFile = files[Math.floor(Math.random() * files.length)];
+                    randomFile.classList.add('highlight');
+                    
+                    const fileName = randomFile.getAttribute('data-name');
+                    
+                    // Add log entry
+                    addLogEntry('MODIFY', fileName, 'content changed');
+                    
+                    // Remove highlight after animation
+                    setTimeout(() => {
+                        randomFile.classList.remove('highlight');
+                    }, 3000);
+                } else {
+                    alert('No files to modify. Create a file first!');
+                }
+            });
+            
+            // Delete item
+            deleteItemBtn.addEventListener('click', function() {
+                const items = filesystemItems.querySelectorAll('.filesystem-item');
+                
+                if (items.length > 0) {
+                    // Select random item
+                    const randomItem = items[Math.floor(Math.random() * items.length)];
+                    const itemName = randomItem.getAttribute('data-name');
+                    const isDirectory = randomItem.querySelector('i').classList.contains('fa-folder');
+                    
+                    randomItem.classList.add('highlight');
+                    
+                    // Add log entry
+                    addLogEntry('DELETE', itemName, isDirectory ? 'directory' : 'file');
+                    
+                    // Remove item after animation
+                    setTimeout(() => {
+                        randomItem.remove();
+                    }, 1500);
+                } else {
+                    alert('No items to delete!');
+                }
+            });
+            
+            // Clear log
+            clearLogBtn.addEventListener('click', function() {
+                // Keep only the first entry
+                const firstEntry = logEntries.querySelector('.log-entry');
+                logEntries.innerHTML = '';
+                logEntries.appendChild(firstEntry);
+            });
+            
+            // Restart demo
+            restartDemoBtn.addEventListener('click', function() {
+                // Reset file counter
+                fileCounter = 1;
+                dirCounter = 1;
+                
+                // Clear filesystem items except initial ones
+                const initialItems = `
+                    <div class="filesystem-item" data-name="config.json">
+                        <i class="fas fa-file-code"></i> config.json
+                    </div>
+                    <div class="filesystem-item" data-name="data">
+                        <i class="fas fa-folder"></i> data
+                    </div>
+                    <div class="filesystem-item" data-name="script.sh">
+                        <i class="fas fa-file-code"></i> script.sh
+                    </div>
+                    <div class="filesystem-item" data-name="README.md">
+                        <i class="fas fa-file-alt"></i> README.md
+                    </div>
+                `;
+                
+                filesystemItems.innerHTML = initialItems;
+                
+                // Reset log
+                const startLogEntry = document.createElement('div');
+                startLogEntry.className = 'log-entry create show';
+                startLogEntry.innerHTML = `
+                    <span class="timestamp">${getTimestamp()}</span>
+                    <span class="event create">CREATE</span>
+                    <span class="target">inotify_watch restarted on /home/user/monitored</span>
+                `;
+                
+                logEntries.innerHTML = '';
+                logEntries.appendChild(startLogEntry);
+            });
+        });
+    </script>
+</body>
+</html>
