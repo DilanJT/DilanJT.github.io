@@ -92,22 +92,28 @@
         .inotify-demo {
             background-color: var(--bg-secondary);
             border-radius: 0.5rem;
-            padding: 2rem;
+            padding: 1.5rem;
             margin: 2rem 0;
             box-shadow: var(--card-shadow);
         }
         
+        .inotify-demo h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        
         .inotify-filesystem {
             display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
         }
         
         .filesystem-container {
             flex: 2;
             border: 1px solid var(--border-color);
             border-radius: 0.5rem;
-            padding: 1.5rem;
+            padding: 1rem;
             background-color: var(--bg-color);
         }
         
@@ -115,14 +121,33 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--border-color);
+        }
+        
+        .filesystem-header h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            color: var(--text-muted);
         }
         
         .filesystem-actions {
             display: flex;
             gap: 0.5rem;
+        }
+        
+        .filesystem-actions button {
+            font-size: 0.85rem;
+            padding: 0.4rem 0.7rem;
+            border-radius: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .filesystem-actions button i {
+            font-size: 0.8rem;
         }
         
         .filesystem-items {
@@ -138,6 +163,7 @@
             border-radius: 0.25rem;
             border: 1px solid transparent;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         
         .filesystem-item:hover {
@@ -153,18 +179,21 @@
         
         .filesystem-item i {
             margin-right: 0.5rem;
+            font-size: 0.9rem;
+            width: 1.2rem;
+            text-align: center;
         }
         
         .inotify-log {
             flex: 3;
             border: 1px solid var(--border-color);
             border-radius: 0.5rem;
-            padding: 1.5rem;
+            padding: 1rem;
             background-color: var(--code-bg);
             color: var(--text-color);
             font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            height: 300px;
+            font-size: 0.8rem;
+            height: 280px;
             overflow-y: auto;
         }
         
@@ -172,9 +201,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--border-color);
+        }
+        
+        .inotify-log-header h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            color: var(--text-muted);
+        }
+        
+        .inotify-log-header button {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
         }
         
         .inotify-log-entries {
@@ -184,10 +224,11 @@
         
         .log-entry {
             margin-bottom: 0.5rem;
-            padding: 0.5rem;
+            padding: 0.4rem 0.5rem;
             border-radius: 0.25rem;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(10px);
+            line-height: 1.4;
         }
         
         .log-entry.show {
@@ -211,6 +252,7 @@
         .log-entry .timestamp {
             color: var(--text-muted);
             margin-right: 0.5rem;
+            font-size: 0.8rem;
         }
         
         .log-entry .event {
@@ -233,12 +275,29 @@
         .inotify-controls {
             display: flex;
             justify-content: space-between;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
         
         .inotify-control-group {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
+        }
+        
+        .inotify-controls button {
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .inotify-controls button i {
+            font-size: 0.8rem;
+        }
+        
+        .inotify-controls .btn.primary {
+            padding: 0.4rem 1rem;
         }
         
         @keyframes pulse {
@@ -349,7 +408,7 @@
                                         <i class="fas fa-plus"></i> Create File
                                     </button>
                                     <button id="create-dir" class="btn secondary">
-                                        <i class="fas fa-folder-plus"></i> Create Directory
+                                        <i class="fas fa-folder-plus"></i> Create Dir
                                     </button>
                                 </div>
                             </div>
@@ -657,6 +716,20 @@ done</code></pre>
                 setTimeout(() => {
                     entry.classList.add('show');
                 }, 10);
+                
+                // Give visual feedback on button press
+                const btnMap = {
+                    'CREATE': createFileBtn,
+                    'MODIFY': modifyFileBtn,
+                    'DELETE': deleteItemBtn
+                };
+                
+                if (btnMap[event]) {
+                    btnMap[event].classList.add('active');
+                    setTimeout(() => {
+                        btnMap[event].classList.remove('active');
+                    }, 200);
+                }
             }
             
             // Create new file
@@ -678,6 +751,18 @@ done</code></pre>
                 setTimeout(() => {
                     fileItem.classList.remove('highlight');
                 }, 3000);
+                
+                // Make the demo feel more interactive - add event listeners to items
+                fileItem.addEventListener('click', function() {
+                    if (!this.classList.contains('highlight')) {
+                        this.classList.add('highlight');
+                        const name = this.getAttribute('data-name');
+                        addLogEntry('MODIFY', name, 'selected by user');
+                        setTimeout(() => {
+                            this.classList.remove('highlight');
+                        }, 1500);
+                    }
+                });
             });
             
             // Create new directory
@@ -699,6 +784,33 @@ done</code></pre>
                 setTimeout(() => {
                     dirItem.classList.remove('highlight');
                 }, 3000);
+                
+                // Make the demo feel more interactive
+                dirItem.addEventListener('click', function() {
+                    if (!this.classList.contains('highlight')) {
+                        this.classList.add('highlight');
+                        const name = this.getAttribute('data-name');
+                        addLogEntry('MODIFY', name, 'directory accessed');
+                        setTimeout(() => {
+                            this.classList.remove('highlight');
+                        }, 1500);
+                    }
+                });
+            });
+            
+            // Make initial items interactive too
+            document.querySelectorAll('.filesystem-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (!this.classList.contains('highlight')) {
+                        this.classList.add('highlight');
+                        const name = this.getAttribute('data-name');
+                        const isDirectory = this.querySelector('i').classList.contains('fa-folder');
+                        addLogEntry('MODIFY', name, isDirectory ? 'directory accessed' : 'file accessed');
+                        setTimeout(() => {
+                            this.classList.remove('highlight');
+                        }, 1500);
+                    }
+                });
             });
             
             // Modify file
@@ -729,7 +841,8 @@ done</code></pre>
                         randomFile.classList.remove('highlight');
                     }, 3000);
                 } else {
-                    alert('No files to modify. Create a file first!');
+                    // Create a toast notification instead of alert
+                    showToast('No files to modify. Create a file first!');
                 }
             });
             
@@ -753,7 +866,8 @@ done</code></pre>
                         randomItem.remove();
                     }, 1500);
                 } else {
-                    alert('No items to delete!');
+                    // Create a toast notification instead of alert
+                    showToast('No items to delete!');
                 }
             });
             
@@ -763,6 +877,14 @@ done</code></pre>
                 const firstEntry = logEntries.querySelector('.log-entry');
                 logEntries.innerHTML = '';
                 logEntries.appendChild(firstEntry);
+                
+                // Add feedback
+                clearLogBtn.classList.add('active');
+                setTimeout(() => {
+                    clearLogBtn.classList.remove('active');
+                }, 200);
+                
+                showToast('Log cleared');
             });
             
             // Restart demo
@@ -770,6 +892,12 @@ done</code></pre>
                 // Reset file counter
                 fileCounter = 1;
                 dirCounter = 1;
+                
+                // Add feedback
+                restartDemoBtn.classList.add('active');
+                setTimeout(() => {
+                    restartDemoBtn.classList.remove('active');
+                }, 200);
                 
                 // Clear filesystem items except initial ones
                 const initialItems = `
@@ -800,7 +928,76 @@ done</code></pre>
                 
                 logEntries.innerHTML = '';
                 logEntries.appendChild(startLogEntry);
+                
+                // Make items interactive again
+                setTimeout(() => {
+                    document.querySelectorAll('.filesystem-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            if (!this.classList.contains('highlight')) {
+                                this.classList.add('highlight');
+                                const name = this.getAttribute('data-name');
+                                const isDirectory = this.querySelector('i').classList.contains('fa-folder');
+                                addLogEntry('MODIFY', name, isDirectory ? 'directory accessed' : 'file accessed');
+                                setTimeout(() => {
+                                    this.classList.remove('highlight');
+                                }, 1500);
+                            }
+                        });
+                    });
+                }, 100);
+                
+                showToast('Demo restarted');
             });
+            
+            // Toast notification function
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Add toast style
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast {
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(100px);
+                    background-color: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 4px;
+                    z-index: 1000;
+                    opacity: 0;
+                    transition: transform 0.3s ease, opacity 0.3s ease;
+                }
+                
+                .toast.show {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                
+                .btn.active {
+                    transform: scale(0.95);
+                    opacity: 0.9;
+                    transition: transform 0.2s ease, opacity 0.2s ease;
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>
