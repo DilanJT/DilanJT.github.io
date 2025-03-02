@@ -1,67 +1,36 @@
-// Skills Orbit Interaction JavaScript
+// Skills Orbit JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    const skillsContainer = document.querySelector('.skills-container');
     const skillItems = document.querySelectorAll('.skill-item');
     const skillsCore = document.querySelector('.skills-core');
     
-    if (!skillsContainer || !skillItems.length) return;
+    if (!skillItems.length || !skillsCore) return;
     
-    // Pause orbital rotation on hover over any skill
-    skillsContainer.addEventListener('mouseenter', function() {
-        this.style.animationPlayState = 'paused';
-    });
-    
-    skillsContainer.addEventListener('mouseleave', function() {
-        this.style.animationPlayState = 'running';
-    });
-    
-    // Add custom behaviors for each skill
+    // Add interaction for each skill
     skillItems.forEach(item => {
-        // Add slight randomized movement to each skill for more organic feel
-        const randomDelay = Math.random() * 5;
-        item.style.animationDelay = `${randomDelay}s`;
-        
-        // Add slight rotation to each skill icon
-        const icon = item.querySelector('.skill-icon i');
-        if (icon) {
-            icon.style.transition = 'transform 0.5s ease';
-        }
-        
         // On hover effects
         item.addEventListener('mouseenter', function() {
-            // Scale up the skill
-            this.style.transform = this.style.transform.replace('scale(1)', '') + ' scale(1.2)';
-            
-            // Make core pulse faster
-            if (skillsCore) {
-                skillsCore.style.animationDuration = '1s';
-            }
-            
-            // Rotate the icon slightly
-            if (icon) {
-                icon.style.transform = 'rotate(10deg) scale(1.2)';
-            }
-            
-            // Add ripple effect to the skill core
+            // Change the core text to the skill name
             const skillName = this.getAttribute('data-skill');
             if (skillsCore) {
+                skillsCore.style.animationDuration = '1s';
                 skillsCore.innerHTML = `<span class="core-text">${skillName}</span>`;
             }
+            
+            // Highlight this skill
+            this.style.zIndex = '15';
         });
         
         item.addEventListener('mouseleave', function() {
-            // Reset icon rotation
-            if (icon) {
-                icon.style.transform = 'rotate(0) scale(1)';
-            }
-            
-            // Reset core pulse rate
+            // Reset core text and animation
             if (skillsCore) {
                 skillsCore.style.animationDuration = '2s';
                 setTimeout(() => {
-                    skillsCore.innerHTML = '<span class="core-text">Skills</span>';
-                }, 500);
+                    skillsCore.innerHTML = '<span class="core-text">SKILLS</span>';
+                }, 300);
             }
+            
+            // Reset z-index
+            this.style.zIndex = '5';
         });
     });
     
@@ -71,6 +40,25 @@ document.addEventListener('DOMContentLoaded', function() {
             // Select a random skill
             const randomIndex = Math.floor(Math.random() * skillItems.length);
             const randomSkill = skillItems[randomIndex];
+            
+            // Define the highlight class if it doesn't exist
+            if (!document.getElementById('highlight-style')) {
+                const style = document.createElement('style');
+                style.id = 'highlight-style';
+                style.textContent = `
+                    @keyframes highlightPulse {
+                        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(66, 99, 235, 0.7); }
+                        50% { transform: scale(1.15); box-shadow: 0 0 20px 10px rgba(66, 99, 235, 0); }
+                        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(66, 99, 235, 0); }
+                    }
+                    
+                    .highlight-pulse {
+                        animation: highlightPulse 2s ease-in-out forwards !important;
+                        z-index: 20 !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
             
             // Add highlight class
             randomSkill.classList.add('highlight-pulse');
