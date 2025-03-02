@@ -6,6 +6,7 @@
     <title>JTFusion | Dilan Jayamanne</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -43,7 +44,7 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Skills Orbit -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
@@ -61,21 +62,66 @@
                 </div>
             </div>
             <div class="hero-image">
-                <div class="code-block">
-                    <pre><code>
-class Developer {
-  constructor() {
-    this.name = "Dilan Jayamanne";
-    this.role = "Software Engineer";
-    this.skills = ["Python", "Rust", "OOP"];
-    this.experience = "3+ years";
-  }
-  
-  solveProblems() {
-    return "Converting challenges into results";
-  }
-}
-                    </code></pre>
+                <div class="skills-orbit">
+                    <div class="skills-core">
+                        <span class="core-text">Skills</span>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skill-item" data-skill="Python">
+                            <div class="skill-icon">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <div class="skill-info">
+                                <h4>Python</h4>
+                                <p>Backend Development, Django, Flask, APIs</p>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="Rust">
+                            <div class="skill-icon">
+                                <i class="devicon-rust-plain"></i>
+                            </div>
+                            <div class="skill-info">
+                                <h4>Rust</h4>
+                                <p>Memory-safe Systems Programming, Concurrency</p>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="PostgreSQL">
+                            <div class="skill-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="skill-info">
+                                <h4>PostgreSQL</h4>
+                                <p>Database Design, Optimization, SQL</p>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="Bluetooth">
+                            <div class="skill-icon">
+                                <i class="fab fa-bluetooth-b"></i>
+                            </div>
+                            <div class="skill-info">
+                                <h4>Bluetooth</h4>
+                                <p>IoT Connectivity, Device Provisioning</p>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="Linux">
+                            <div class="skill-icon">
+                                <i class="fab fa-linux"></i>
+                            </div>
+                            <div class="skill-info">
+                                <h4>Linux</h4>
+                                <p>System Administration, Shell Scripting</p>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-skill="Docker">
+                            <div class="skill-icon">
+                                <i class="fab fa-docker"></i>
+                            </div>
+                            <div class="skill-info">
+                                <h4>Docker</h4>
+                                <p>Containerization, Microservices</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -280,5 +326,6 @@ class Developer {
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/skills.js"></script>
 </body>
 </html>
