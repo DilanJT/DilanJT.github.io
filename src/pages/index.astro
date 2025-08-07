@@ -1,239 +1,108 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import "@fontsource-variable/dm-sans";
+import Container from "../components/Container.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { Icon } from "astro-icon/components";
 ---
 
-<Layout title="DilanJT - Backend Developer">
-  <section id="home" class="section">
-    <div class="container">
-      <div class="hero">
-        <h1>DilanJT</h1>
-        <div class="hero-content">
-          <div class="hero-text">
-            <p class="subtitle">Backend Developer & Tech Enthusiast</p>
-            <div class="expertise">
-              <span class="tech-tag">Rust</span>
-              <span class="tech-tag">Python</span>
-              <span class="tech-tag">PostgreSQL</span>
-              <span class="tech-tag">Bluetooth</span>
-              <span class="tech-tag">Backend Development</span>
-            </div>
-          </div>
-          <div class="hero-image">
-            <div class="image-placeholder">DJT</div>
-          </div>
-        </div>
-      </div>
+<html lang="en">
+  <head>
+    <script is:inline>
+      if (localStorage.getItem("theme") === null) {
+        document.documentElement.setAttribute("data-theme", "lofi");
+      } else
+        document.documentElement.setAttribute(
+          "data-theme",
+          localStorage.getItem("theme")
+        );
+    </script>
+    <script>
+      import { themeChange } from "theme-change";
+      themeChange();
+    </script>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/favicon.webp" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Dilan Jayamanne - Software Engineer specializing in Rust/Python backend development and IoT systems. 3+ years experience with 60-80% performance improvements." />
+    <meta name="keywords" content="Dilan Jayamanne, Software Engineer, Rust Developer, Python Developer, IoT, BLE, Backend Development, Sri Lanka" />
+    <meta property="og:title" content="Dilan Jayamanne - Software Engineer Portfolio" />
+    <meta property="og:description" content="Results-driven software engineer specializing in high-performance Rust/Python backend development and IoT systems." />
+    <meta property="og:type" content="website" />
+    <title>Dilan Jayamanne - Software Engineer Portfolio</title>
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <Header />
+    <div
+      class="flex items-center absolute top-4 right-4 md:top-6 md:right-6 lg:top-8 lg:right-8 xl:top-10 xl:right-10 z-10"
+    >
+      <Icon name="carbon:moon" class="w-4 h-4" />
+      <input
+        type="checkbox"
+        data-toggle-theme="black,lofi"
+        data-act-class="ACTIVECLASS"
+        class="toggle toggle-sm mx-1 bg-secondary"
+        checked
+      />
+      <Icon name="carbon:light" class="w-4 h-4" />
     </div>
-  </section>
 
-  <section id="articles" class="section">
-    <div class="container">
-      <h2>Latest Articles</h2>
-      <div class="articles-grid">
-        <article class="article-card">
-          <h3>Building High-Performance Backend Systems with Rust</h3>
-          <p class="article-meta">2024 • Technical Deep Dive</p>
-          <p>Exploring memory safety and performance benefits of Rust in backend development.</p>
-        </article>
-        <article class="article-card">
-          <h3>Bluetooth Low Energy Protocol Implementation</h3>
-          <p class="article-meta">2024 • Research</p>
-          <p>Deep dive into BLE protocol stack and custom implementation strategies.</p>
-        </article>
-        <article class="article-card">
-          <h3>PostgreSQL Optimization Techniques</h3>
-          <p class="article-meta">2023 • Best Practices</p>
-          <p>Advanced query optimization and database performance tuning strategies.</p>
-        </article>
-      </div>
+    <div
+      class="divider mx-auto h-fit max-w-3xl w-[95vw] flex flex-nowrap bg-secondary"
+    >
     </div>
-  </section>
-
-  <section id="projects" class="section">
-    <div class="container">
-      <h2>Key Projects & Research</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3>Rust-Based Microservices Architecture</h3>
-          <p>High-performance distributed system handling 100k+ requests/second with sub-millisecond latency.</p>
-          <div class="project-tech">
-            <span>Rust</span>
-            <span>gRPC</span>
-            <span>PostgreSQL</span>
-          </div>
-        </div>
-        <div class="project-card">
-          <h3>Bluetooth Mesh Network Protocol</h3>
-          <p>Custom implementation of mesh networking protocol for IoT devices with 99.9% reliability.</p>
-          <div class="project-tech">
-            <span>C++</span>
-            <span>Bluetooth LE</span>
-            <span>Embedded Systems</span>
-          </div>
-        </div>
-        <div class="project-card">
-          <h3>Real-time Data Processing Pipeline</h3>
-          <p>Scalable Python-based pipeline processing millions of events per day with ML integration.</p>
-          <div class="project-tech">
-            <span>Python</span>
-            <span>Apache Kafka</span>
-            <span>TensorFlow</span>
-          </div>
-        </div>
+    <main
+      class="mx-auto flex-grow max-h-[90vh] md:max-h-[70vh] max-w-3xl overflow-y-scroll py-2 grid w-[95vw]"
+    >
+      <div class="container">
+        <Container />
       </div>
-    </div>
-  </section>
+    </main>
+    <Footer class="flex justify-center items-center py-4" />
+  </body>
+</html>
 
-  <section id="achievements" class="section">
-    <div class="container">
-      <h2>Achievements</h2>
-      <div class="achievements-list">
-        <div class="achievement-item">
-          <h3>IEEE Conference Publication</h3>
-          <p>Published research on "Optimized Bluetooth Mesh Protocols for Industrial IoT" - IEEE IoT Conference 2024</p>
-        </div>
-        <div class="achievement-item">
-          <h3>Open Source Contributions</h3>
-          <p>Core contributor to major Rust ecosystem libraries with 10k+ GitHub stars combined</p>
-        </div>
-        <div class="achievement-item">
-          <h3>Performance Engineering</h3>
-          <p>Achieved 300% performance improvement in production systems through Rust migration</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</Layout>
-
-<style>
-  .hero {
-    text-align: left;
+<style is:global>
+  body {
+    font-family: "DM Sans Variable", sans-serif;
   }
 
-  .hero-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    margin-top: 2rem;
+  @media (min-width: 768px) {
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 
-  .subtitle {
-    font-size: 1.5rem;
-    color: #ccc;
-    margin-bottom: 2rem;
+  @media only screen and (max-width: 480px) {
+    * {
+      font-size: 12px;
+    }
   }
 
-  .expertise {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+  .overflow-y-scroll::-webkit-scrollbar {
+    width: 3px;
   }
 
-  .tech-tag {
-    padding: 0.5rem 1rem;
-    border: 1px solid #333;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.2s ease;
+  .overflow-y-scroll::-webkit-scrollbar-thumb {
+    background-color: oklch(var(--s));
   }
 
-  .tech-tag:hover {
-    background-color: #ffffff;
-    color: #000000;
-  }
-
-  .hero-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .image-placeholder {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-  }
-
-  .articles-grid, .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-
-  .article-card, .project-card {
-    padding: 2rem;
-    border: 1px solid #333;
-    transition: border-color 0.2s ease;
-  }
-
-  .article-card:hover, .project-card:hover {
-    border-color: #666;
-  }
-
-  .article-meta {
-    color: #888;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .project-tech {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .project-tech span {
-    padding: 0.25rem 0.5rem;
-    background-color: #111;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .achievements-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .achievement-item {
-    padding: 2rem;
-    border-left: 2px solid #333;
-    padding-left: 2rem;
-  }
-
-  .achievement-item h3 {
-    margin-bottom: 0.5rem;
+  .overflow-y-scroll {
+    scrollbar-width: 1px;
   }
 
   @media (max-width: 768px) {
-    .hero-content {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      text-align: center;
+    .container {
+      flex-direction: column;
     }
+  }
 
-    .articles-grid, .projects-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .expertise {
-      justify-content: center;
-    }
-
-    .tech-tag {
-      font-size: 0.8rem;
+  @media (min-width: 768px) {
+    .container {
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 </style>
