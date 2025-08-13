@@ -3,6 +3,7 @@ import "@fontsource-variable/dm-sans";
 import Container from "../components/Container.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import SectionNav from "../components/SectionNav.astro";
 import { Icon } from "astro-icon/components";
 ---
 
@@ -25,17 +26,32 @@ import { Icon } from "astro-icon/components";
     <link rel="icon" type="image/png" href="/favicon.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="Dilan Jayamanne - Software Engineer specializing in Rust/Python backend development and IoT systems. 3+ years experience with 60-80% performance improvements." />
-    <meta name="keywords" content="Dilan Jayamanne, Software Engineer, Rust Developer, Python Developer, IoT, BLE, Backend Development, Sri Lanka" />
-    <meta property="og:title" content="Dilan Jayamanne - Software Engineer Portfolio" />
-    <meta property="og:description" content="Results-driven software engineer specializing in high-performance Rust/Python backend development and IoT systems." />
+    <meta
+      name="description"
+      content="Dilan Jayamanne - Software Engineer specializing in Rust/Python backend development and IoT systems. 3+ years experience with 60-80% performance improvements."
+    />
+    <meta
+      name="keywords"
+      content="Dilan Jayamanne, Software Engineer, Rust Developer, Python Developer, IoT, BLE, Backend Development, Sri Lanka"
+    />
+    <meta
+      property="og:title"
+      content="Dilan Jayamanne - Software Engineer Portfolio"
+    />
+    <meta
+      property="og:description"
+      content="Results-driven software engineer specializing in high-performance Rust/Python backend development and IoT systems."
+    />
     <meta property="og:type" content="website" />
     <title>Dilan Jayamanne - Software Engineer Portfolio</title>
   </head>
   <body class="flex flex-col min-h-screen">
-    <Header />
+    <!-- Section Navigation -->
+    <SectionNav />
+
+    <!-- Theme Toggle -->
     <div
-      class="flex items-center absolute top-4 right-4 md:top-6 md:right-6 lg:top-8 lg:right-8 xl:top-10 xl:right-10 z-10"
+      class="flex items-center absolute top-4 right-4 md:top-6 md:right-6 lg:top-8 lg:right-8 xl:top-10 xl:right-10 z-50"
     >
       <Icon name="carbon:moon" class="w-4 h-4" />
       <input
@@ -48,17 +64,20 @@ import { Icon } from "astro-icon/components";
       <Icon name="carbon:light" class="w-4 h-4" />
     </div>
 
-    <div
-      class="divider mx-auto h-fit max-w-3xl w-[95vw] flex flex-nowrap bg-secondary"
-    >
-    </div>
-    <main
-      class="mx-auto flex-grow max-h-[90vh] md:max-h-[70vh] max-w-3xl overflow-y-scroll py-2 grid w-[95vw]"
-    >
-      <div class="container">
-        <Container />
+    <!-- Main Content Area -->
+    <div class="main-content-wrapper pt-4 md:pt-0">
+      <Header />
+
+      <div
+        class="divider mx-auto h-fit max-w-3xl w-[95vw] flex flex-nowrap bg-secondary"
+      >
       </div>
-    </main>
+      <main class="mx-auto flex-grow max-w-3xl py-2 grid w-[95vw]">
+        <div class="container">
+          <Container />
+        </div>
+      </main>
+    </div>
     <Footer class="flex justify-center items-center py-4" />
   </body>
 </html>
@@ -68,41 +87,37 @@ import { Icon } from "astro-icon/components";
     font-family: "DM Sans Variable", sans-serif;
   }
 
+  /* Main content wrapper adjustments */
+  .main-content-wrapper {
+    transition: margin-left 0.3s ease;
+  }
+
+  /* Desktop: adjust for sidebar */
   @media (min-width: 768px) {
+    .main-content-wrapper {
+      margin-left: 18rem; /* 288px sidebar width for w-72 */
+    }
+
     .container {
       display: flex;
       flex-wrap: wrap;
+    }
+  }
+
+  /* Mobile: full width */
+  @media (max-width: 767px) {
+    .main-content-wrapper {
+      margin-left: 0;
+    }
+
+    .container {
+      flex-direction: column;
     }
   }
 
   @media only screen and (max-width: 480px) {
     * {
       font-size: 12px;
-    }
-  }
-
-  .overflow-y-scroll::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  .overflow-y-scroll::-webkit-scrollbar-thumb {
-    background-color: oklch(var(--s));
-  }
-
-  .overflow-y-scroll {
-    scrollbar-width: 1px;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .container {
-      display: flex;
-      flex-wrap: wrap;
     }
   }
 </style>

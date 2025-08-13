@@ -15,14 +15,17 @@ const contact = await Astro.glob("../pages/contact/*.md");
 const PDF = "/cv_dilan_jayamanne.pdf";
 ---
 
-<div class="join join-vertical gap-1">
-  <AccordionLayout title={"About"} icon={"carbon:identification"}>
-    <article class="text-justify">
-      <Fragment set:html={about.compiledContent()} />
-    </article>
-  </AccordionLayout>
+<div class="join join-vertical gap-1 w-full">
+  <div id="about">
+    <AccordionLayout title={"About"} icon={"carbon:identification"}>
+      <article class="text-justify">
+        <Fragment set:html={about.compiledContent()} />
+      </article>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Work Experience"} icon={"carbon:construction"}>
+  <div id="work">
+    <AccordionLayout title={"Work Experience"} icon={"carbon:construction"}>
     {
       works.map((item) => {
         return (
@@ -38,9 +41,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         );
       })
     }
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Education"} icon={"carbon:education"}>
+  <div id="education">
+    <AccordionLayout title={"Education"} icon={"carbon:education"}>
     {
       studies.map((item) => {
         return (
@@ -55,9 +60,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         );
       })
     }
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Research & Projects"} icon={"carbon:tools"}>
+  <div id="research">
+    <AccordionLayout title={"Research & Projects"} icon={"carbon:tools"}>
     {
       research.map((item) => {
         return (
@@ -86,9 +93,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         );
       })
     }
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Articles & Publications"} icon={"carbon:pen"}>
+  <div id="articles">
+    <AccordionLayout title={"Articles & Publications"} icon={"carbon:pen"}>
     {
       articles.map((item) => {
         return (
@@ -103,9 +112,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         );
       })
     }
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"YouTube Videos"} icon={"carbon:video"}>
+  <div id="videos">
+    <AccordionLayout title={"YouTube Videos"} icon={"carbon:video"}>
     {
       videos.map((item) => {
         return (
@@ -120,9 +131,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         );
       })
     }
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Certifications"} icon={"carbon:certificate"}>
+  <div id="certificates">
+    <AccordionLayout title={"Certifications"} icon={"carbon:certificate"}>
     {
       certificates.map((item) => {
         return (
@@ -137,9 +150,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         );
       })
     }
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Files"} icon={"carbon:volume-file-storage"}>
+  <div id="files">
+    <AccordionLayout title={"Files"} icon={"carbon:volume-file-storage"}>
     <div class="flex justify-center w-full">
       <div
         class="card card-compact card-bordered border-[oklch(var(--s))] w-96 md:w-112 lg:w-128 hover:shadow-lg transition-all"
@@ -161,9 +176,11 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         </div>
       </div>
     </div>
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 
-  <AccordionLayout title={"Contact"} icon={"carbon:location-person"}>
+  <div id="contact">
+    <AccordionLayout title={"Contact"} icon={"carbon:location-person"}>
     <div class="flex flex-wrap content-around gap-4 justify-center">
       {
         contact.map((item) => {
@@ -177,5 +194,6 @@ const PDF = "/cv_dilan_jayamanne.pdf";
         })
       }
     </div>
-  </AccordionLayout>
+    </AccordionLayout>
+  </div>
 </div>

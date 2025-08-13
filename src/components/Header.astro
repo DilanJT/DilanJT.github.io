@@ -5,49 +5,64 @@ import * as about from "../pages/about/about.md";
 
 <header class="mx-auto pt-6 pb-2 relative">
   <article
-    class="flex flex-col md:flex-col items-center gap-4 w-full max-w-2xl"
+    class="flex flex-col items-center gap-6 w-full max-w-2xl mx-auto text-center"
   >
+    <!-- Profile Image -->
     <div
-      class="flex-shrink-0 w-20 md:w-24 rounded-full shadow-sm overflow-hidden"
+      class="flex-shrink-0 w-24 md:w-28 lg:w-32 rounded-full shadow-lg overflow-hidden ring-4 ring-base-300"
     >
       <img
-        alt="avatar"
+        alt="Dilan Jayamanne Profile Picture"
         src="/profile_pic4.png"
-        class="grayscale-[50] hover:grayscale-0"
+        class="w-full h-full object-cover grayscale-[50] hover:grayscale-0 transition-all duration-300"
       />
     </div>
 
-    <div class="text-center">
-      <div
-        class="flex justify-center md:justify-between items-center mb-2 relative"
-      >
-        <h1 class="text-3xl font-extrabold tracking-tight md:text-3xl relative">
+    <!-- Profile Information -->
+    <div class="text-center space-y-3">
+      <!-- Name and Pronouns -->
+      <div class="relative">
+        <h1
+          class="text-3xl md:text-4xl font-extrabold tracking-tight text-base-content"
+        >
           {about.frontmatter.name}
-          <div class="absolute top-0 left-full ml-2 -mt-4">
-            <div class="badge w-max text-sm font-light badge-outline shadow-lg">
-              {about.frontmatter.pronouns}
-            </div>
-          </div>
         </h1>
+        <div class="mt-2">
+          <div class="badge badge-outline badge-sm font-light shadow-sm">
+            {about.frontmatter.pronouns}
+          </div>
+        </div>
       </div>
-      <h2 class="text-lg mb-2 text-secondary">
+
+      <!-- Designation -->
+      <h2 class="text-lg md:text-xl font-medium text-primary">
         {about.frontmatter.designation}
       </h2>
-      <div class="flex items-center justify-center mt-1">
-        <Icon name="carbon:location" class="w-4 h-4 mr-1" />
-        <p class="text-sm text-secondary">{about.frontmatter.location}</p>
+
+      <!-- Location -->
+      <div class="flex items-center justify-center gap-2 text-base-content/70">
+        <Icon name="carbon:location" class="w-4 h-4" />
+        <p class="text-sm md:text-base">{about.frontmatter.location}</p>
       </div>
     </div>
   </article>
 </header>
 
 <style>
+  /* Responsive adjustments */
   @media (max-width: 768px) {
-    .flex-col.justify-end {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    header {
+      padding-top: 4rem; /* Account for mobile nav button */
     }
+  }
+
+  /* Smooth transitions */
+  .badge {
+    transition: all 0.3s ease;
+  }
+
+  .badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 </style>

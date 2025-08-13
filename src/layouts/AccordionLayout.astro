@@ -5,16 +5,78 @@ const { title, icon } = Astro.props;
 ---
 
 <BaseLayout>
-  <div class="collapse collapse-arrow ease-in-out duration-700">
-    <input aria-label={title} type="checkbox"/>
-    <div class="collapse-title font-extrabold tracking-tight md:text-2xl">
-      <div class="flex">
-        <Icon name={icon} class="w-8 h-8 mr-4" />
-        {title}
+  <details
+    class="group collapse ease-in-out duration-700 bg-base-100 border border-base-300 rounded-lg mb-2 shadow-sm hover:shadow-md transition-shadow w-full"
+  >
+    <summary
+      class="collapse-title font-extrabold tracking-tight md:text-2xl cursor-pointer hover:bg-base-200 transition-colors p-4 list-none"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <Icon name={icon} class="w-8 h-8 mr-4 flex-shrink-0 text-primary" />
+          <span class="flex-grow text-base-content">{title}</span>
+        </div>
+        <Icon
+          name="carbon:chevron-down"
+          class="w-6 h-6 text-base-content/60 transition-transform duration-300 group-open:rotate-180"
+        />
       </div>
+    </summary>
+    <div class="collapse-content p-4 pt-0 space-y-4 w-full overflow-hidden">
+      <slot />
     </div>
-    <div class="collapse-content">
-      <slot/>
-    </div>
-  </div>
+  </details>
 </BaseLayout>
+
+<style>
+  /* Custom accordion styles */
+  details {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details summary::marker {
+    display: none;
+  }
+
+  /* Smooth content reveal animation */
+  details .collapse-content {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  details:not([open]) .collapse-content {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Focus styles for accessibility */
+  summary:focus {
+    outline: 2px solid hsl(var(--p));
+    outline-offset: 2px;
+  }
+</style>
