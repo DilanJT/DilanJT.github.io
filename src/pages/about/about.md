@@ -2,7 +2,7 @@
 title: about
 name: "Dilan Jayamanne"
 designation: "Software Engineer"
-location: "Negombo, Western Province, Sri Lanka"
+location: "Discovery gardens, Dubai, UAE"
 pronouns: "he/him"
 website: "https://youtube.com/@DilanTech"
 ---
