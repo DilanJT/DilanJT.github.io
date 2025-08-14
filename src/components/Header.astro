@@ -35,7 +35,7 @@ import * as about from "../pages/about/about.md";
       </div>
 
       <!-- Designation -->
-      <h2 class="text-lg md:text-xl font-medium text-primary">
+      <h2 class="text-lg md:text-xl font-bold text-base-content">
         {about.frontmatter.designation}
       </h2>
 
@@ -43,6 +43,29 @@ import * as about from "../pages/about/about.md";
       <div class="flex items-center justify-center gap-2 text-base-content/70">
         <Icon name="carbon:location" class="w-4 h-4" />
         <p class="text-sm md:text-base">{about.frontmatter.location}</p>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-base-content/70">
+        <!-- Phone -->
+        <div class="flex items-center gap-2">
+          <Icon name="carbon:phone" class="w-4 h-4" />
+          <div class="flex items-center gap-2 text-sm">
+            <a href="tel:+971502663976" class="hover:text-primary transition-colors">+971 50 266 3976</a>
+            <span>|</span>
+            <a href="https://wa.me/971502663976" target="_blank" class="hover:text-primary transition-colors">
+              WhatsApp
+            </a>
+          </div>
+        </div>
+        
+        <!-- Email -->
+        <div class="flex items-center gap-2">
+          <Icon name="carbon:email" class="w-4 h-4" />
+          <a href="mailto:dicmandilan@gmail.com" class="text-sm hover:text-primary transition-colors">
+            dicmandilan@gmail.com
+          </a>
+        </div>
       </div>
     </div>
   </article>

@@ -10,7 +10,6 @@ const research = await Astro.glob("../pages/research/*.md");
 const studies = await Astro.glob("../pages/studies/*.md");
 const certificates = await Astro.glob("../pages/certificates/*.md");
 const articles = await Astro.glob("../pages/articles/*.md");
-const videos = await Astro.glob("../pages/videos/*.md");
 const contact = await Astro.glob("../pages/contact/*.md");
 const PDF = "/cv_dilan_jayamanne.pdf";
 ---
@@ -117,24 +116,35 @@ const PDF = "/cv_dilan_jayamanne.pdf";
 
   <div id="videos">
     <AccordionLayout title={"YouTube Videos"} icon={"carbon:video"}>
-    {
-      videos.map((item) => {
-        return (
-          <Card
-            title={item.frontmatter.title}
-            timeframe={item.frontmatter.date}
-            description={item.compiledContent()}
-            tags={item.frontmatter.tags}
-            url={item.frontmatter.url}
-            url_name={item.frontmatter.url_name}
-          />
-        );
-      })
-    }
+      <div class="space-y-4">
+        <!-- Git Tutorials Playlist -->
+        <Card
+          title="Git Tutorials"
+          description="Comprehensive Git tutorials covering version control fundamentals and advanced concepts."
+          url="https://youtube.com/playlist?list=PLxB11SRdpr7MXr2RsNoFmz2xyNcWihRHv&si=kVp6yx_M-HImLSWl"
+          url_name="Watch Playlist"
+        />
+        
+        <!-- Rust Tutorials and Demos Playlist -->
+        <Card
+          title="Rust Tutorials and Demos"
+          description="Learn Rust programming with practical tutorials and real-world demonstrations."
+          url="https://youtube.com/playlist?list=PLxB11SRdpr7ObNblzwQ0hqJhkmlc04wHb&si=5SN2Xq5L0TO2sPe2"
+          url_name="Watch Playlist"
+        />
+        
+        <!-- More Videos -->
+        <Card
+          title="More Videos"
+          description="Explore additional tech content and tutorials on my YouTube channel."
+          url="https://www.youtube.com/@DilanTech/videos"
+          url_name="View All Videos"
+        />
+      </div>
     </AccordionLayout>
   </div>
 
-  <div id="certificates">
+  <!-- <div id="certificates">
     <AccordionLayout title={"Certifications"} icon={"carbon:certificate"}>
     {
       certificates.map((item) => {
@@ -151,10 +161,10 @@ const PDF = "/cv_dilan_jayamanne.pdf";
       })
     }
     </AccordionLayout>
-  </div>
+  </div> -->
 
   <div id="files">
-    <AccordionLayout title={"Files"} icon={"carbon:volume-file-storage"}>
+    <AccordionLayout title={"CV/Resume"} icon={"carbon:document"}>
     <div class="flex justify-center w-full">
       <div
         class="card card-compact card-bordered border-[oklch(var(--s))] w-96 md:w-112 lg:w-128 hover:shadow-lg transition-all"
