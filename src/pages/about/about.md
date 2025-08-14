@@ -1,7 +1,7 @@
 ---
 title: about
 name: "Dilan Jayamanne"
-designation: "Software Engineer"
+designation: "Software Engineer | Backend and IoT"
 location: "Discovery gardens, Dubai, UAE"
 pronouns: "he/him"
 website: "https://youtube.com/@DilanTech"
