@@ -1,0 +1,1114 @@
+---
+// Valentine's Surprise Page for Nuwi
+// Customize the letter text and date below
+const LETTER_TEXT = `To my dearest Nuwi,
+
+Every moment with you feels like
+the universe conspired just for us.
+
+You make the ordinary extraordinary,
+and the hard days so much softer.
+
+Your smile is my favourite thing
+in this whole world.
+
+This is just a small reminder
+of how much you mean to me...
+
+But first, you have to earn
+your surprise.`;
+
+const QUIZ = {
+  question: "What do I do often?",
+  options: [
+    "Go to toilet",
+    "Kiss your hands",
+    "Kiss your lips",
+    "Eat",
+    'Telling "Ehenan api giya" after a chat',
+  ],
+  correctIndex: 1,
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>For You</title>
+    <link rel="preload" as="image" href="/us.JPG" />
+  </head>
+  <body>
+    <!-- Background music (starts on first interaction) -->
+    <audio id="bg-music" loop preload="auto" src="/music.mp3"></audio>
+
+    <!-- Particle overlay -->
+    <div id="particles"></div>
+
+    <!-- STAGE 0: Sealed Envelope -->
+    <div id="stage-0" class="stage">
+      <div id="envelope" class="envelope">
+        <div class="envelope-body">
+          <div class="envelope-flap" id="flap"></div>
+          <div id="seal" class="seal">&#10084;</div>
+          <div id="card" class="inner-card"></div>
+        </div>
+      </div>
+      <p class="tap-text">Tap to open</p>
+    </div>
+
+    <!-- STAGE 1: Love Letter -->
+    <div id="stage-1" class="stage hidden">
+      <div class="letter-card" id="letter-card">
+        <div class="flourish">~ &#10084; ~</div>
+        <div class="letter-body">
+          <span id="letter-text"></span><span id="cursor" class="typewriter-cursor">|</span>
+        </div>
+        <div id="continue-btn" class="continue-arrow hidden">
+          <span>&#9660;</span>
+          <p>Continue</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 2: Quiz -->
+    <div id="stage-2" class="stage hidden">
+      <div class="quiz-card">
+        <p class="quiz-question">{QUIZ.question}</p>
+        <div class="quiz-options" id="quiz-options">
+          {QUIZ.options.map((option, i) => (
+            <button class="quiz-option" data-index={i}>{option}</button>
+          ))}
+        </div>
+        <p id="quiz-feedback" class="quiz-feedback">&nbsp;</p>
+      </div>
+    </div>
+
+    <!-- STAGE 3: Gift Box -->
+    <div id="stage-3" class="stage hidden">
+      <p class="gift-title">You unlocked your surprise!</p>
+      <div class="gift-scene" id="gift-scene">
+        <div class="gift-box" id="gift-box">
+          <div class="box-lid" id="lid">
+            <div class="lid-face"></div>
+            <div class="bow">
+              <div class="bow-loop bow-left"></div>
+              <div class="bow-loop bow-right"></div>
+              <div class="bow-knot"></div>
+            </div>
+          </div>
+          <div class="box-base">
+            <div class="box-face box-front"></div>
+            <div class="box-face box-back"></div>
+            <div class="box-face box-left"></div>
+            <div class="box-face box-right"></div>
+            <div class="ribbon-v"></div>
+            <div class="ribbon-h"></div>
+          </div>
+        </div>
+        <div id="ribbon-pull" class="ribbon-pull">
+          <div class="ribbon-strip"></div>
+          <div class="ribbon-tab">&#9650;</div>
+        </div>
+      </div>
+      <p class="pull-text">Swipe up on the ribbon</p>
+      <button id="tap-unwrap" class="tap-unwrap-btn">or tap here to unwrap</button>
+    </div>
+
+    <!-- STAGE 4: Photo Reveal -->
+    <div id="stage-4" class="stage hidden">
+      <div class="reveal-container">
+        <div class="photo-frame" id="photo-frame">
+          <img src="/us.JPG" alt="Us" class="reveal-photo" id="reveal-photo" />
+        </div>
+        <h1 class="valentine-title" id="val-title">Happy Valentine's Day</h1>
+        <p class="valentine-subtitle" id="val-subtitle">I love you, Nuwi &#10084;</p>
+      </div>
+      <div class="heartbeat-bottom">&#10084;</div>
+    </div>
+
+    <!-- Hidden data for JS -->
+    <div id="app-data"
+      data-letter={LETTER_TEXT}
+      data-correct={QUIZ.correctIndex}
+      style="display:none;">
+    </div>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Georgia', 'Times New Roman', serif;
+        background: #0d0000;
+      }
+
+      /* ===== STAGES ===== */
+      .stage {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to bottom, #1a0005, #2d0a0a, #0d0000);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .stage.hidden {
+        display: none;
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      /* ===== PARTICLES ===== */
+      #particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        overflow: hidden;
+      }
+
+      .floating-heart {
+        position: absolute;
+        bottom: -30px;
+        color: rgba(255, 50, 80, 0.5);
+        pointer-events: none;
+        animation: floatUp linear forwards;
+        will-change: transform, opacity;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+          opacity: 0.4;
+        }
+        25% {
+          transform: translateY(-25vh) translateX(15px) rotate(10deg) scale(1.05);
+        }
+        50% {
+          transform: translateY(-50vh) translateX(-10px) rotate(-5deg) scale(1.1);
+        }
+        75% {
+          transform: translateY(-75vh) translateX(10px) rotate(15deg) scale(1.0);
+        }
+        100% {
+          transform: translateY(-110vh) translateX(-5px) rotate(-10deg) scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      .burst-heart {
+        position: fixed;
+        color: #ff3254;
+        pointer-events: none;
+        z-index: 100;
+        animation: burst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        will-change: transform, opacity;
+      }
+
+      @keyframes burst {
+        0% {
+          transform: translate(0, 0) rotate(0deg) scale(0);
+          opacity: 1;
+        }
+        20% {
+          transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) rotate(calc(var(--rot) * 0.3)) scale(1.2);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.4);
+          opacity: 0;
+        }
+      }
+
+      /* ===== STAGE 0: ENVELOPE ===== */
+      .envelope {
+        cursor: pointer;
+        position: relative;
+        perspective: 800px;
+      }
+
+      .envelope-body {
+        position: relative;
+        width: 280px;
+        height: 180px;
+        background: linear-gradient(135deg, #f5e6d0, #e8d5b8);
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        overflow: visible;
+      }
+
+      @media (min-width: 768px) {
+        .envelope-body {
+          width: 400px;
+          height: 260px;
+        }
+      }
+
+      .envelope-flap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(135deg, #ecdcc4, #dcc9a8);
+        clip-path: polygon(0 0, 50% 100%, 100% 0);
+        transform-origin: top center;
+        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 3;
+      }
+
+      .envelope-flap.opened {
+        transform: rotateX(-180deg);
+      }
+
+      .seal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 56px;
+        height: 56px;
+        background: radial-gradient(circle at 35% 35%, #c41e3a, #8b0000);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #f5e6d0;
+        font-size: 22px;
+        z-index: 5;
+        box-shadow: 0 0 15px rgba(255, 0, 50, 0.4);
+        animation: sealPulse 2s ease-in-out infinite;
+        transition: all 0.4s ease;
+      }
+
+      .seal.cracked {
+        animation: none;
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 0;
+        box-shadow: 0 0 60px rgba(255, 0, 50, 0.8);
+      }
+
+      @keyframes sealPulse {
+        0%, 100% { box-shadow: 0 0 15px rgba(255, 0, 50, 0.4); }
+        50% { box-shadow: 0 0 35px rgba(255, 0, 50, 0.8); }
+      }
+
+      .inner-card {
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70%;
+        height: 60%;
+        background: #fff;
+        border-radius: 4px;
+        z-index: 2;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .inner-card.risen {
+        transform: translateX(-50%) translateY(-120px);
+      }
+
+      .tap-text {
+        margin-top: 32px;
+        color: rgba(255, 200, 200, 0.6);
+        font-size: 16px;
+        font-style: italic;
+        animation: breathe 2.5s ease-in-out infinite;
+      }
+
+      @keyframes breathe {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+
+      /* ===== STAGE 1: LOVE LETTER ===== */
+      .letter-card {
+        width: 85vw;
+        max-width: 480px;
+        max-height: 75vh;
+        background: linear-gradient(145deg, #faf3e8, #f0e4d0);
+        border-radius: 16px;
+        border: 2px solid #b76e79;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        position: relative;
+      }
+
+      .flourish {
+        text-align: center;
+        color: #b76e79;
+        font-size: 18px;
+        margin-bottom: 20px;
+        letter-spacing: 4px;
+      }
+
+      .letter-body {
+        color: #3d2b1f;
+        font-size: 17px;
+        line-height: 1.75;
+        white-space: pre-wrap;
+        flex: 1;
+      }
+
+      @media (min-width: 768px) {
+        .letter-body { font-size: 19px; }
+      }
+
+      .typewriter-cursor {
+        color: #b76e79;
+        animation: blink 0.7s step-end infinite;
+        font-weight: bold;
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+
+      .continue-arrow {
+        text-align: center;
+        color: #b76e79;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: opacity 0.5s ease;
+      }
+
+      .continue-arrow.hidden {
+        display: none;
+      }
+
+      .continue-arrow span {
+        display: block;
+        font-size: 20px;
+        animation: bounce 1.5s ease-in-out infinite;
+      }
+
+      .continue-arrow p {
+        font-size: 14px;
+        font-style: italic;
+        margin-top: 4px;
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(8px); }
+      }
+
+      /* ===== STAGE 2: QUIZ ===== */
+      .quiz-card {
+        width: 85vw;
+        max-width: 420px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .quiz-question {
+        color: rgba(255, 200, 200, 0.95);
+        font-size: 22px;
+        font-style: italic;
+        text-align: center;
+        line-height: 1.4;
+      }
+
+      @media (min-width: 768px) {
+        .quiz-question { font-size: 26px; }
+      }
+
+      .quiz-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .quiz-option {
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(183, 110, 121, 0.4);
+        color: rgba(255, 220, 220, 0.9);
+        border-radius: 14px;
+        padding: 14px 20px;
+        font-size: 16px;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.3s ease;
+      }
+
+      .quiz-option:active {
+        transform: scale(0.97);
+      }
+
+      .quiz-option:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(183, 110, 121, 0.7);
+      }
+
+      .quiz-option.correct {
+        background: rgba(0, 180, 80, 0.25);
+        border-color: #00b450;
+        color: #90ffb0;
+        transform: scale(1.03);
+      }
+
+      .quiz-option.wrong {
+        background: rgba(255, 50, 50, 0.15);
+        border-color: rgba(255, 80, 80, 0.5);
+        color: rgba(255, 150, 150, 0.7);
+      }
+
+      .quiz-option.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      .quiz-feedback {
+        color: rgba(255, 150, 150, 0.8);
+        font-size: 15px;
+        font-style: italic;
+        min-height: 22px;
+        text-align: center;
+        transition: opacity 0.3s ease;
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+        20%, 40%, 60%, 80% { transform: translateX(6px); }
+      }
+
+      /* ===== STAGE 3: GIFT BOX ===== */
+      .gift-title {
+        color: rgba(255, 200, 200, 0.9);
+        font-size: 22px;
+        font-style: italic;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .gift-scene {
+        position: relative;
+        width: 220px;
+        height: 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        perspective: 600px;
+      }
+
+      .gift-box {
+        position: relative;
+        width: 180px;
+        height: 180px;
+      }
+
+      .box-base {
+        position: absolute;
+        bottom: 0;
+        width: 180px;
+        height: 140px;
+        transform-style: preserve-3d;
+      }
+
+      .box-face {
+        position: absolute;
+        background: linear-gradient(135deg, #8b0000, #a01020);
+        transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .box-front {
+        width: 180px;
+        height: 140px;
+        border-radius: 0 0 8px 8px;
+        transform-origin: bottom center;
+      }
+
+      .box-front.folded { transform: rotateX(85deg); opacity: 0.5; }
+      .box-back { display: none; }
+      .box-left { display: none; }
+      .box-right { display: none; }
+
+      .ribbon-v {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, #d4a042, #f0c860, #d4a042);
+        z-index: 2;
+      }
+
+      .ribbon-h {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 20px;
+        transform: translateY(-50%);
+        background: linear-gradient(180deg, #d4a042, #f0c860, #d4a042);
+        z-index: 2;
+      }
+
+      .box-lid {
+        position: absolute;
+        top: 0;
+        left: -5px;
+        width: 190px;
+        height: 40px;
+        transform-origin: bottom center;
+        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 3;
+      }
+
+      .lid-face {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #a01020, #c41e3a);
+        border-radius: 6px 6px 0 0;
+        position: relative;
+      }
+
+      .lid-face::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, #d4a042, #f0c860, #d4a042);
+      }
+
+      .box-lid.opened {
+        transform: rotateX(-110deg) translateY(-10px);
+      }
+
+      .bow {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 4;
+      }
+
+      .bow-loop {
+        position: absolute;
+        width: 30px;
+        height: 20px;
+        background: linear-gradient(135deg, #d4a042, #f0c860);
+        border-radius: 50%;
+        top: 0;
+      }
+
+      .bow-left {
+        left: -28px;
+        transform: rotate(-20deg);
+      }
+
+      .bow-right {
+        right: -28px;
+        transform: rotate(20deg);
+      }
+
+      .bow-knot {
+        width: 16px;
+        height: 16px;
+        background: radial-gradient(circle, #f0c860, #d4a042);
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        top: 4px;
+        transform: translateX(-50%);
+      }
+
+      .ribbon-pull {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: -10px;
+        cursor: grab;
+        touch-action: none;
+        z-index: 10;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .ribbon-pull.fly-away {
+        animation: ribbonFly 0.6s ease-in forwards;
+      }
+
+      .ribbon-strip {
+        width: 20px;
+        height: 50px;
+        background: linear-gradient(90deg, #d4a042, #f0c860, #d4a042);
+      }
+
+      .ribbon-tab {
+        color: #f0c860;
+        font-size: 20px;
+        padding: 4px;
+        animation: bounce 1.5s ease-in-out infinite;
+      }
+
+      @keyframes ribbonFly {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-100vh); opacity: 0; }
+      }
+
+      .pull-text {
+        color: rgba(255, 200, 200, 0.6);
+        font-size: 14px;
+        font-style: italic;
+        margin-top: 16px;
+      }
+
+      .tap-unwrap-btn {
+        background: none;
+        border: 1px solid rgba(255, 200, 200, 0.3);
+        color: rgba(255, 200, 200, 0.5);
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-size: 13px;
+        font-style: italic;
+        font-family: inherit;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .tap-unwrap-btn:active {
+        background: rgba(255, 200, 200, 0.1);
+      }
+
+      .glow-overlay {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 200, 220, 0.8), rgba(255, 50, 80, 0.3), transparent);
+        transform: translate(-50%, -50%) scale(0);
+        z-index: 60;
+        pointer-events: none;
+      }
+
+      .glow-overlay.expanding {
+        animation: glowExpand 1.5s ease-out forwards;
+      }
+
+      @keyframes glowExpand {
+        0% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+        70% { opacity: 0.5; }
+        100% { transform: translate(-50%, -50%) scale(15); opacity: 0; }
+      }
+
+      /* ===== STAGE 4: PHOTO REVEAL ===== */
+      .reveal-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        gap: 16px;
+      }
+
+      .photo-frame {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 40px rgba(255, 50, 80, 0.3), 0 0 80px rgba(255, 50, 80, 0.15);
+        border: 3px solid #b76e79;
+        animation: photoReveal 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        opacity: 0;
+      }
+
+      .reveal-photo {
+        display: block;
+        max-height: 60vh;
+        max-width: 85vw;
+        object-fit: cover;
+        border-radius: 13px;
+      }
+
+      @keyframes photoReveal {
+        0% { opacity: 0; transform: scale(1.15); filter: brightness(2.5); }
+        40% { opacity: 1; filter: brightness(1.3); }
+        100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+      }
+
+      .valentine-title {
+        color: white;
+        font-size: 28px;
+        text-shadow: 0 0 20px rgba(255, 50, 80, 0.5);
+        opacity: 0;
+        animation: fadeInUp 1s ease-out 1.2s both;
+      }
+
+      @media (min-width: 768px) {
+        .valentine-title { font-size: 36px; }
+      }
+
+      .valentine-subtitle {
+        color: rgba(255, 200, 200, 0.9);
+        font-size: 20px;
+        font-style: italic;
+        opacity: 0;
+        animation: fadeInUp 1s ease-out 1.8s both;
+      }
+
+      @media (min-width: 768px) {
+        .valentine-subtitle { font-size: 24px; }
+      }
+
+      @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      .heartbeat-bottom {
+        position: absolute;
+        bottom: 24px;
+        color: #c41e3a;
+        font-size: 28px;
+        animation: heartbeat 1.5s ease-in-out infinite;
+        opacity: 0;
+        animation: heartbeat 1.5s ease-in-out infinite, fadeInUp 1s ease-out 2.5s both;
+      }
+
+      @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        15% { transform: scale(1.2); }
+        30% { transform: scale(1); }
+        45% { transform: scale(1.15); }
+      }
+    </style>
+
+    <script is:inline>
+      (function() {
+        // ===== CONFIG =====
+        const appData = document.getElementById('app-data');
+        const LETTER_TEXT = appData.getAttribute('data-letter');
+        const CORRECT_INDEX = parseInt(appData.getAttribute('data-correct'));
+
+        let currentStage = 0;
+        let typewriterTimer = null;
+        let heartInterval = null;
+
+        // ===== PARTICLE SYSTEM =====
+        function createFloatingHeart() {
+          const particlesEl = document.getElementById('particles');
+          if (!particlesEl) return;
+          const heart = document.createElement('div');
+          const hearts = ['\u2764', '\u2765', '\u2661'];
+          heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          heart.className = 'floating-heart';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.fontSize = (Math.random() * 16 + 10) + 'px';
+          heart.style.opacity = String(Math.random() * 0.3 + 0.15);
+          heart.style.animationDuration = (Math.random() * 6 + 7) + 's';
+          particlesEl.appendChild(heart);
+          heart.addEventListener('animationend', function() { heart.remove(); });
+        }
+
+        heartInterval = setInterval(createFloatingHeart, 900);
+
+        function burstHearts(count, originX, originY) {
+          if (originX === undefined) originX = window.innerWidth / 2;
+          if (originY === undefined) originY = window.innerHeight / 2;
+          var particlesEl = document.getElementById('particles');
+          for (var i = 0; i < count; i++) {
+            var heart = document.createElement('div');
+            heart.textContent = '\u2764';
+            heart.className = 'burst-heart';
+            heart.style.left = originX + 'px';
+            heart.style.top = originY + 'px';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+            heart.style.setProperty('--ty', (Math.random() - 0.5) * 300 - 80 + 'px');
+            heart.style.setProperty('--rot', (Math.random() - 0.5) * 720 + 'deg');
+            heart.style.animationDelay = (Math.random() * 0.3) + 's';
+            particlesEl.appendChild(heart);
+            heart.addEventListener('animationend', function() { this.remove(); });
+          }
+        }
+
+        // ===== STAGE TRANSITIONS =====
+        function transitionToStage(newStage) {
+          var stages = ['stage-0', 'stage-1', 'stage-2', 'stage-3', 'stage-4'];
+          var current = document.getElementById(stages[currentStage]);
+          var next = document.getElementById(stages[newStage]);
+
+          current.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+          current.style.opacity = '0';
+          current.style.transform = 'scale(0.95)';
+
+          setTimeout(function() {
+            current.style.display = 'none';
+            current.classList.add('hidden');
+            next.classList.remove('hidden');
+            next.style.display = 'flex';
+            next.style.opacity = '0';
+            next.style.transform = 'scale(1.03)';
+            // Force reflow
+            void next.offsetHeight;
+            next.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+            next.style.opacity = '1';
+            next.style.transform = 'scale(1)';
+            currentStage = newStage;
+
+            if (newStage === 1) initTypewriter();
+            if (newStage === 2) initQuiz();
+          }, 700);
+        }
+
+        // ===== STAGE 0: ENVELOPE =====
+        (function initEnvelope() {
+          var envelope = document.getElementById('envelope');
+          var seal = document.getElementById('seal');
+          var flap = document.getElementById('flap');
+          var card = document.getElementById('card');
+          var tapped = false;
+
+          envelope.addEventListener('click', function() {
+            if (tapped || currentStage !== 0) return;
+            tapped = true;
+
+            // Start background music on first interaction
+            var music = document.getElementById('bg-music');
+            music.volume = 0.4;
+            music.play().catch(function() {});
+
+            seal.classList.add('cracked');
+
+            setTimeout(function() {
+              flap.classList.add('opened');
+            }, 400);
+
+            setTimeout(function() {
+              card.classList.add('risen');
+            }, 1100);
+
+            setTimeout(function() {
+              transitionToStage(1);
+            }, 2200);
+          });
+        })();
+
+        // ===== STAGE 1: TYPEWRITER =====
+        function initTypewriter() {
+          var textEl = document.getElementById('letter-text');
+          var cursor = document.getElementById('cursor');
+          var continueBtn = document.getElementById('continue-btn');
+          var letterCard = document.getElementById('letter-card');
+          var i = 0;
+          var done = false;
+
+          function showContinue() {
+            if (done) return;
+            done = true;
+            cursor.style.display = 'none';
+            continueBtn.classList.remove('hidden');
+          }
+
+          function typeChar() {
+            if (i < LETTER_TEXT.length) {
+              textEl.textContent += LETTER_TEXT.charAt(i);
+              i++;
+              typewriterTimer = setTimeout(typeChar, 45);
+            } else {
+              showContinue();
+            }
+          }
+
+          typeChar();
+
+          // Tap to skip
+          letterCard.addEventListener('click', function skipHandler(e) {
+            if (e.target === continueBtn || continueBtn.contains(e.target)) return;
+            if (done) return;
+            clearTimeout(typewriterTimer);
+            textEl.textContent = LETTER_TEXT;
+            showContinue();
+          });
+
+          // Continue button
+          continueBtn.addEventListener('click', function() {
+            transitionToStage(2);
+          });
+        }
+
+        // ===== STAGE 2: QUIZ =====
+        function initQuiz() {
+          var options = document.querySelectorAll('.quiz-option');
+          var feedback = document.getElementById('quiz-feedback');
+          var answered = false;
+
+          options.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              if (answered) return;
+              var index = parseInt(btn.getAttribute('data-index'));
+
+              if (index === CORRECT_INDEX) {
+                // Correct!
+                answered = true;
+                btn.classList.add('correct');
+                feedback.textContent = 'You know me so well!';
+                feedback.style.color = '#90ffb0';
+
+                // Disable all other options
+                options.forEach(function(o) {
+                  if (o !== btn) o.classList.add('disabled');
+                });
+
+                var rect = btn.getBoundingClientRect();
+                burstHearts(40, rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+                setTimeout(function() {
+                  transitionToStage(3);
+                }, 1800);
+              } else {
+                // Wrong
+                btn.classList.add('wrong');
+                btn.style.animation = 'shake 0.5s ease';
+                feedback.textContent = 'Hmm, try again my love...';
+                feedback.style.color = 'rgba(255, 150, 150, 0.8)';
+
+                // Reset after a moment
+                setTimeout(function() {
+                  btn.classList.remove('wrong');
+                  btn.style.animation = '';
+                  btn.classList.add('disabled');
+                }, 800);
+              }
+            });
+          });
+        }
+
+        // ===== STAGE 3: GIFT BOX =====
+        (function initGiftBox() {
+          var ribbonPull = document.getElementById('ribbon-pull');
+          var dragStartY = 0;
+          var isDragging = false;
+          var unwrapped = false;
+
+          function doUnwrap() {
+            if (unwrapped) return;
+            unwrapped = true;
+
+            ribbonPull.classList.add('fly-away');
+
+            setTimeout(function() {
+              document.getElementById('lid').classList.add('opened');
+            }, 400);
+
+            setTimeout(function() {
+              var scene = document.getElementById('gift-scene');
+              var rect = scene.getBoundingClientRect();
+              burstHearts(60, rect.left + rect.width / 2, rect.top + rect.height / 2);
+              document.querySelector('.box-front').classList.add('folded');
+            }, 900);
+
+            // Glow overlay
+            setTimeout(function() {
+              var glow = document.createElement('div');
+              glow.className = 'glow-overlay';
+              document.body.appendChild(glow);
+              void glow.offsetHeight;
+              glow.classList.add('expanding');
+              glow.addEventListener('animationend', function() { glow.remove(); });
+            }, 1300);
+
+            // Preload image
+            var img = new Image();
+            img.src = '/us.JPG';
+
+            setTimeout(function() {
+              transitionToStage(4);
+            }, 2500);
+          }
+
+          // Touch events for swipe
+          ribbonPull.addEventListener('touchstart', function(e) {
+            if (unwrapped) return;
+            dragStartY = e.touches[0].clientY;
+            isDragging = true;
+          }, { passive: true });
+
+          ribbonPull.addEventListener('touchmove', function(e) {
+            if (!isDragging || unwrapped) return;
+            e.preventDefault();
+            var deltaY = dragStartY - e.touches[0].clientY;
+            if (deltaY > 0) {
+              var progress = Math.min(deltaY / 150, 1);
+              ribbonPull.style.transform = 'translateY(-' + (deltaY * 0.6) + 'px)';
+              ribbonPull.style.opacity = String(1 - progress * 0.5);
+            }
+          }, { passive: false });
+
+          ribbonPull.addEventListener('touchend', function(e) {
+            if (!isDragging || unwrapped) return;
+            isDragging = false;
+            var deltaY = dragStartY - e.changedTouches[0].clientY;
+            if (deltaY > 120) {
+              doUnwrap();
+            } else {
+              ribbonPull.style.transform = '';
+              ribbonPull.style.opacity = '';
+            }
+          });
+
+          // Mouse events for desktop
+          ribbonPull.addEventListener('mousedown', function(e) {
+            if (unwrapped) return;
+            dragStartY = e.clientY;
+            isDragging = true;
+            e.preventDefault();
+          });
+
+          document.addEventListener('mousemove', function(e) {
+            if (!isDragging || unwrapped) return;
+            var deltaY = dragStartY - e.clientY;
+            if (deltaY > 0) {
+              ribbonPull.style.transform = 'translateY(-' + (deltaY * 0.6) + 'px)';
+              ribbonPull.style.opacity = String(1 - Math.min(deltaY / 150, 1) * 0.5);
+            }
+          });
+
+          document.addEventListener('mouseup', function(e) {
+            if (!isDragging || unwrapped) return;
+            isDragging = false;
+            var deltaY = dragStartY - e.clientY;
+            if (deltaY > 120) {
+              doUnwrap();
+            } else {
+              ribbonPull.style.transform = '';
+              ribbonPull.style.opacity = '';
+            }
+          });
+
+          // Tap fallback button
+          document.getElementById('tap-unwrap').addEventListener('click', function() {
+            doUnwrap();
+          });
+        })();
+
+      })();
+    </script>
+  </body>
+</html>
