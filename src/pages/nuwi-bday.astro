@@ -1,0 +1,1786 @@
+---
+import "@fontsource-variable/dm-sans";
+import PhotoMosaic from "../components/nuwi-bday/PhotoMosaic.astro";
+import ProgressDots from "../components/nuwi-bday/ProgressDots.astro";
+import VaultStage from "../components/nuwi-bday/VaultStage.astro";
+import VideoChapter from "../components/nuwi-bday/VideoChapter.astro";
+import {
+  coupleGallery,
+  finaleConfig,
+  funGallery,
+  introConfig,
+  memoryChapters,
+  portraitGallery,
+} from "../data/nuwi-bday";
+
+const progressLabels = [
+  "Prelude",
+  "Memory 01",
+  "Memory 02",
+  "Memory 03",
+  "Memory 04",
+  "Scrapbook",
+  "Birthday Girl",
+  "Fun Nuwii",
+  "Final Reveal",
+  "Final Message",
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="A private birthday memory vault built for Nuwi."
+    />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Happy Birthday, Nuwi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href={introConfig.coverImage} />
+    <link rel="preload" as="audio" href={introConfig.backgroundTrack} />
+  </head>
+
+  <body class="vault-page">
+    <div class="vault-backdrop" aria-hidden="true">
+      <div class="vault-backdrop__mesh"></div>
+      <div class="vault-backdrop__orb vault-backdrop__orb--one"></div>
+      <div class="vault-backdrop__orb vault-backdrop__orb--two"></div>
+      <div class="vault-backdrop__grain"></div>
+    </div>
+
+    <audio
+      id="bg-music"
+      src={introConfig.backgroundTrack}
+      preload="metadata"
+      loop
+    ></audio>
+
+    <div class="vault-ui">
+      <ProgressDots labels={progressLabels} />
+      <div class="vault-ui__actions">
+        <button
+          id="music-toggle"
+          class="vault-chip"
+          type="button"
+          aria-pressed="false"
+        >
+          Music on
+        </button>
+        <button id="music-retry" class="vault-chip" type="button" hidden>
+          Tap to enable music
+        </button>
+      </div>
+    </div>
+
+    <main class="vault-root">
+      <VaultStage
+        id="vault-intro"
+        showProgress={false}
+        stageClass="vault-stage--intro"
+        labelledBy="vault-intro-title"
+      >
+        <div class="intro-hero">
+          <div class="intro-hero__image-wrap">
+            <img
+              class="intro-hero__image"
+              src={introConfig.coverImage}
+              alt="Nuwi cover portrait"
+            />
+            <div class="intro-hero__veil"></div>
+          </div>
+
+          <div class="intro-hero__copy">
+            <p class="intro-hero__eyebrow">{introConfig.eyebrow}</p>
+            <h1 id="vault-intro-title" class="intro-hero__title">
+              {introConfig.title}
+            </h1>
+            <p class="intro-hero__lede">
+              A guided collection of memories, mischief, and one final reveal.
+            </p>
+          </div>
+
+          <button
+            class="seal-button"
+            id="vault-open"
+            type="button"
+            data-default-cta
+          >
+            <span class="seal-button__center">Open your vault</span>
+          </button>
+        </div>
+      </VaultStage>
+
+      <VaultStage
+        id="vault-note"
+        progressStep={0}
+        stageClass="vault-stage--note"
+        labelledBy="vault-note-title"
+      >
+        <div class="note-card">
+          <p class="note-card__eyebrow">Before anything else</p>
+          <h2 class="note-card__title" id="vault-note-title">A small note</h2>
+          <div class="note-card__body">
+            {
+              introConfig.note.map((line) => (
+                <p>{line}</p>
+              ))
+            }
+          </div>
+          <button class="vault-button vault-button--primary" type="button" data-next-stage data-default-cta>
+            Continue
+          </button>
+        </div>
+      </VaultStage>
+
+      {
+        memoryChapters.map((chapter, index) => (
+          <VideoChapter chapter={chapter} index={index} progressStep={index + 1} />
+        ))
+      }
+
+      <PhotoMosaic
+        section={coupleGallery}
+        stageId="vault-couple-gallery"
+        progressStep={5}
+        variant="scrapbook"
+      />
+      <PhotoMosaic
+        section={portraitGallery}
+        stageId="vault-portrait-gallery"
+        progressStep={6}
+        variant="portrait"
+      />
+      <PhotoMosaic
+        section={funGallery}
+        stageId="vault-fun-gallery"
+        progressStep={7}
+        variant="fun"
+      />
+
+      <VaultStage
+        id="vault-glitch"
+        progressStep={8}
+        stageClass="vault-stage--glitch"
+        labelledBy="vault-glitch-title"
+      >
+        <div class="glitch-panel" data-glitch-stage>
+          <p class="glitch-panel__eyebrow">Final reveal loading</p>
+          <h2 class="glitch-panel__title" id="vault-glitch-title">
+            Hold on a second...
+          </h2>
+          <div class="glitch-panel__frame" hidden>
+            <img
+              class="glitch-panel__image"
+              src={finaleConfig.trollImage}
+              alt=""
+              data-glitch-image
+            />
+            <div class="glitch-panel__scanline"></div>
+          </div>
+          <p class="glitch-panel__notice" data-glitch-notice>
+            Loading final message...
+          </p>
+          <button class="vault-button vault-button--primary" type="button" data-next-stage hidden>
+            Continue
+          </button>
+        </div>
+      </VaultStage>
+
+      <VaultStage
+        id="vault-final-video"
+        progressStep={8}
+        stageClass="vault-stage--final-video"
+        labelledBy="vault-final-title"
+      >
+        <div class="finale-shell">
+          <div class="finale-shell__copy">
+            <p class="finale-shell__eyebrow">Final reveal</p>
+            <h2 class="finale-shell__title" id="vault-final-title">
+              {finaleConfig.finalTitle}
+            </h2>
+            <p class="finale-shell__subtitle">
+              One last thing before the birthday message.
+            </p>
+          </div>
+
+          <div class="finale-shell__video-frame" data-final-stage>
+            <div class="video-panel__placeholder video-panel__placeholder--final">
+              <span class="video-panel__ring"></span>
+              <p>Play the final reveal with sound.</p>
+            </div>
+            <video
+              id="final-kiss-video"
+              class="memory-video memory-video--final"
+              playsinline
+              controls
+              preload="none"
+              data-src={finaleConfig.finalVideoSrc}
+              aria-label={finaleConfig.finalTitle}
+            ></video>
+          </div>
+
+          <div class="finale-shell__actions">
+            <button class="vault-button vault-button--primary" type="button" data-play-final data-default-cta>
+              Play final reveal
+            </button>
+            <button class="vault-button vault-button--ghost" type="button" data-next-stage data-final-next>
+              Open birthday message
+            </button>
+          </div>
+        </div>
+      </VaultStage>
+
+      <VaultStage
+        id="vault-final-message"
+        progressStep={9}
+        stageClass="vault-stage--ending"
+        labelledBy="vault-ending-title"
+      >
+        <div class="ending-card">
+          <p class="ending-card__eyebrow">Happy Birthday</p>
+          <h2 class="ending-card__title" id="vault-ending-title">
+            To my favorite person
+          </h2>
+          <p class="ending-card__body">{finaleConfig.finalMessage}</p>
+          <div class="ending-card__actions">
+            <button class="vault-button vault-button--primary" type="button" data-replay-final>
+              Replay final video
+            </button>
+            <button class="vault-button vault-button--ghost" type="button" data-restart>
+              {finaleConfig.closingCta}
+            </button>
+          </div>
+        </div>
+      </VaultStage>
+    </main>
+
+    <script
+      is:inline
+      define:vars={{
+        progressLabels,
+        trollMessage: finaleConfig.trollMessage,
+      }}
+    >
+      const stages = Array.from(document.querySelectorAll("[data-stage]"));
+      const progressRoot = document.querySelector("[data-progress-root]");
+      const progressLabel = document.querySelector("[data-progress-label]");
+      const progressDots = Array.from(
+        document.querySelectorAll("[data-progress-dot]"),
+      );
+      const music = document.getElementById("bg-music");
+      const musicToggle = document.getElementById("music-toggle");
+      const musicRetry = document.getElementById("music-retry");
+      const openButton = document.getElementById("vault-open");
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+      const defaultMusicVolume = 0.27;
+      const duckedMusicVolume = 0.07;
+      const glitchStartDelayMs = 300;
+      const glitchHoldMs = 400;
+      let activeStageIndex = 0;
+      let musicEnabled = true;
+      let musicUnlocked = false;
+      let volumeAnimation = null;
+
+      const syncUiHeight = () => {
+        const ui = document.querySelector(".vault-ui");
+        if (!(ui instanceof HTMLElement)) return;
+        const safeHeight = Math.max(72, Math.ceil(ui.getBoundingClientRect().height + 10));
+        document.documentElement.style.setProperty("--vault-ui-height", `${safeHeight}px`);
+      };
+
+      const getActiveStage = () => stages[activeStageIndex];
+
+      const animateVolume = (target, duration = 300) => {
+        if (!music) return;
+        if (volumeAnimation) {
+          cancelAnimationFrame(volumeAnimation);
+        }
+
+        const startVolume = Number.isFinite(music.volume)
+          ? music.volume
+          : defaultMusicVolume;
+        const difference = target - startVolume;
+        const startTime = performance.now();
+
+        const step = (time) => {
+          const elapsed = time - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          music.volume = startVolume + difference * progress;
+
+          if (progress < 1) {
+            volumeAnimation = requestAnimationFrame(step);
+          } else {
+            volumeAnimation = null;
+          }
+        };
+
+        volumeAnimation = requestAnimationFrame(step);
+      };
+
+      const setMusicUi = () => {
+        if (!musicToggle) return;
+
+        musicToggle.textContent = musicEnabled ? "Music on" : "Music muted";
+        musicToggle.setAttribute("aria-pressed", String(!musicEnabled));
+      };
+
+      const tryStartMusic = async () => {
+        if (!music || !musicEnabled) return;
+
+        music.volume = defaultMusicVolume;
+
+        try {
+          await music.play();
+          musicUnlocked = true;
+          musicRetry?.setAttribute("hidden", "true");
+        } catch (_error) {
+          musicUnlocked = false;
+          musicRetry?.removeAttribute("hidden");
+        }
+      };
+
+      const duckMusic = () => {
+        if (!music || !musicEnabled || !musicUnlocked) return;
+        animateVolume(duckedMusicVolume, 250);
+      };
+
+      const restoreMusic = () => {
+        if (!music || !musicEnabled || !musicUnlocked) return;
+        animateVolume(defaultMusicVolume, 400);
+      };
+
+      const resetInteractiveState = () => {
+        Array.from(document.querySelectorAll("[data-video-stage]")).forEach((stage) => {
+          stage.classList.remove("is-playing", "is-finished");
+          const followup = stage.querySelector("[data-video-followup]");
+          const video = stage.querySelector("video");
+          if (followup) {
+            followup.hidden = true;
+          }
+          if (video) {
+            video.pause();
+            video.currentTime = 0;
+          }
+        });
+
+        const finalStage = document.querySelector("[data-final-stage]");
+        finalStage?.classList.remove("is-playing", "is-finished");
+        const finalVideo = document.getElementById("final-kiss-video");
+        if (finalVideo) {
+          finalVideo.pause();
+          finalVideo.currentTime = 0;
+        }
+      };
+
+      const updateProgress = () => {
+        const stage = getActiveStage();
+        const showProgress = stage?.dataset.showProgress === "true";
+        const step = Number(stage?.dataset.progressStep ?? -1);
+
+        if (progressRoot) {
+          progressRoot.classList.toggle("is-hidden", !showProgress);
+        }
+
+        progressDots.forEach((dot, index) => {
+          dot.classList.toggle("is-current", showProgress && index === step);
+          dot.classList.toggle("is-complete", showProgress && index < step);
+        });
+
+        if (showProgress && progressLabel && step >= 0) {
+          progressLabel.textContent = progressLabels[step] ?? "";
+        }
+      };
+
+      const pauseAllVideos = () => {
+        document.querySelectorAll("video").forEach((video) => {
+          video.pause();
+        });
+        restoreMusic();
+      };
+
+      const showStage = (index) => {
+        activeStageIndex = index;
+        stages.forEach((stage, stageIndex) => {
+          const isActive = stageIndex === index;
+          stage.classList.toggle("is-active", isActive);
+          stage.setAttribute("aria-hidden", String(!isActive));
+
+          if (isActive) {
+            stage.querySelector(".gallery-shell")?.scrollTo({
+              top: 0,
+              behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+            });
+
+            const primaryButton = stage.querySelector(
+              "[data-default-cta], [data-play-video], [data-play-final], [data-next-stage], [data-restart]",
+            );
+
+            if (primaryButton instanceof HTMLElement) {
+              window.setTimeout(() => primaryButton.focus({ preventScroll: true }), 120);
+            }
+          }
+        });
+
+        updateProgress();
+
+        if (getActiveStage()?.id === "vault-glitch") {
+          runGlitchSequence();
+        }
+      };
+
+      const nextStage = () => {
+        if (activeStageIndex < stages.length - 1) {
+          pauseAllVideos();
+          showStage(activeStageIndex + 1);
+        }
+      };
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+
+        if (target.matches("[data-next-stage]")) {
+          nextStage();
+        }
+      });
+
+      openButton?.addEventListener("click", async () => {
+        await tryStartMusic();
+        showStage(1);
+      });
+
+      musicToggle?.addEventListener("click", async () => {
+        musicEnabled = !musicEnabled;
+        setMusicUi();
+
+        if (!music) return;
+
+        if (musicEnabled) {
+          music.muted = false;
+          await tryStartMusic();
+          restoreMusic();
+        } else {
+          music.muted = true;
+          music.pause();
+        }
+      });
+
+      musicRetry?.addEventListener("click", async () => {
+        await tryStartMusic();
+      });
+
+      Array.from(document.querySelectorAll("[data-video-stage]")).forEach((stage) => {
+        const playButton = stage.querySelector("[data-play-video]");
+        const skipButton = stage.querySelector("[data-skip-video]");
+        const followup = stage.querySelector("[data-video-followup]");
+        const videoShell = stage.querySelector("[data-video-shell]");
+        const video = stage.querySelector("video");
+
+        const revealFollowup = () => {
+          stage.classList.add("is-finished");
+          if (followup) {
+            followup.hidden = false;
+          }
+          restoreMusic();
+        };
+
+        playButton?.addEventListener("click", async () => {
+          if (!(video instanceof HTMLVideoElement)) return;
+          await tryStartMusic();
+          if (!video.src) {
+            video.src = video.dataset.src ?? "";
+            video.load();
+          }
+
+          stage.classList.add("is-playing");
+          videoShell?.classList.add("is-playing");
+
+          try {
+            await video.play();
+            duckMusic();
+          } catch (_error) {
+            revealFollowup();
+          }
+        });
+
+        skipButton?.addEventListener("click", () => {
+          if (video instanceof HTMLVideoElement) {
+            video.pause();
+          }
+          revealFollowup();
+        });
+
+        if (video instanceof HTMLVideoElement) {
+          video.addEventListener("loadedmetadata", () => {
+            if (video.videoWidth > 0 && video.videoHeight > 0) {
+              videoShell?.setAttribute(
+                "style",
+                `--video-aspect-ratio: ${video.videoWidth} / ${video.videoHeight};`,
+              );
+            }
+          });
+
+          video.addEventListener("play", () => {
+            duckMusic();
+            stage.classList.add("is-playing");
+            videoShell?.classList.add("is-playing");
+          });
+
+          video.addEventListener("pause", () => {
+            if (!video.ended) {
+              restoreMusic();
+            }
+          });
+
+          video.addEventListener("ended", () => {
+            revealFollowup();
+          });
+
+          video.addEventListener("error", () => {
+            revealFollowup();
+          });
+        }
+      });
+
+      const finalStage = document.querySelector("[data-final-stage]");
+      const finalVideo = document.getElementById("final-kiss-video");
+      const finalPlayButton = document.querySelector("[data-play-final]");
+
+      finalPlayButton?.addEventListener("click", async () => {
+        if (!(finalVideo instanceof HTMLVideoElement)) return;
+        await tryStartMusic();
+
+        if (!finalVideo.src) {
+          finalVideo.src = finalVideo.dataset.src ?? "";
+          finalVideo.load();
+        }
+
+        finalStage?.classList.add("is-playing");
+        try {
+          await finalVideo.play();
+          duckMusic();
+        } catch (_error) {}
+      });
+
+      if (finalVideo instanceof HTMLVideoElement) {
+        finalVideo.addEventListener("loadedmetadata", () => {
+          if (finalVideo.videoWidth > 0 && finalVideo.videoHeight > 0) {
+            finalStage?.setAttribute(
+              "style",
+              `--video-aspect-ratio: ${finalVideo.videoWidth} / ${finalVideo.videoHeight};`,
+            );
+          }
+        });
+
+        finalVideo.addEventListener("play", () => {
+          duckMusic();
+          finalStage?.classList.add("is-playing");
+        });
+
+        finalVideo.addEventListener("pause", () => {
+          if (!finalVideo.ended) {
+            restoreMusic();
+          }
+        });
+
+        finalVideo.addEventListener("ended", () => {
+          finalStage?.classList.add("is-finished");
+          restoreMusic();
+          window.setTimeout(() => {
+            if (getActiveStage()?.id === "vault-final-video") {
+              nextStage();
+            }
+          }, 420);
+        });
+
+        finalVideo.addEventListener("error", () => {
+          restoreMusic();
+        });
+      }
+
+      const runGlitchSequence = () => {
+        const glitchStage = document.querySelector("[data-glitch-stage]");
+        const glitchImage = glitchStage?.querySelector("[data-glitch-image]");
+        const glitchNotice = glitchStage?.querySelector("[data-glitch-notice]");
+        const glitchNextButton = glitchStage?.querySelector("[data-next-stage]");
+
+        glitchStage?.classList.remove("is-blinking", "is-resolved");
+        glitchImage?.classList.remove("is-visible");
+        if (glitchImage instanceof HTMLElement) {
+          glitchImage.style.opacity = "";
+          glitchImage.style.transform = "";
+          glitchImage.style.filter = "";
+        }
+        glitchNextButton?.setAttribute("hidden", "true");
+
+        if (glitchNotice) {
+          glitchNotice.textContent = "Loading final message...";
+        }
+
+        window.setTimeout(() => {
+          glitchStage?.classList.add("is-blinking");
+          glitchImage?.classList.add("is-visible");
+        }, glitchStartDelayMs);
+
+        window.setTimeout(() => {
+          glitchStage?.classList.remove("is-blinking");
+          glitchImage?.classList.remove("is-visible");
+          glitchStage?.classList.add("is-resolved");
+          if (glitchImage instanceof HTMLElement) {
+            glitchImage.style.opacity = "0.92";
+            glitchImage.style.transform = "none";
+            glitchImage.style.filter = "none";
+          }
+          if (glitchNotice) {
+            glitchNotice.textContent = trollMessage;
+          }
+          glitchNextButton?.removeAttribute("hidden");
+        }, glitchStartDelayMs + glitchHoldMs);
+      };
+
+      document.querySelector("[data-replay-final]")?.addEventListener("click", () => {
+        if (finalVideo instanceof HTMLVideoElement) {
+          finalVideo.pause();
+          finalVideo.currentTime = 0;
+        }
+        showStage(stages.findIndex((stage) => stage.id === "vault-final-video"));
+      });
+
+      document.querySelector("[data-restart]")?.addEventListener("click", async () => {
+        resetInteractiveState();
+        if (music && musicUnlocked && musicEnabled) {
+          music.currentTime = 0;
+          await tryStartMusic();
+        }
+        showStage(0);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.repeat) return;
+
+        if (event.key === "Enter") {
+          const target = getActiveStage()?.querySelector(
+            "[data-default-cta], [data-next-stage], [data-play-video], [data-play-final], [data-restart]",
+          );
+          if (target instanceof HTMLButtonElement) {
+            event.preventDefault();
+            target.click();
+          }
+        }
+
+        if (event.key === " " || event.code === "Space") {
+          const target = getActiveStage()?.querySelector(
+            "[data-play-video], [data-play-final]",
+          );
+          if (target instanceof HTMLButtonElement) {
+            event.preventDefault();
+            target.click();
+          }
+        }
+      });
+
+      const parallaxGrids = Array.from(document.querySelectorAll("[data-parallax-grid='true']"));
+      if (!prefersReducedMotion.matches && window.matchMedia("(min-width: 900px)").matches) {
+        parallaxGrids.forEach((grid) => {
+          grid.addEventListener("pointermove", (event) => {
+            const bounds = grid.getBoundingClientRect();
+            const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 18;
+            const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 18;
+
+            grid.querySelectorAll(".mosaic-card").forEach((card) => {
+              const depth = Number(card.style.getPropertyValue("--card-depth") || 1);
+              card.style.transform = `translate3d(${x * depth * 0.2}px, ${y * depth * 0.2}px, 0) rotate(${card.style.getPropertyValue("--card-rotation")})`;
+            });
+          });
+
+          grid.addEventListener("pointerleave", () => {
+            grid.querySelectorAll(".mosaic-card").forEach((card) => {
+              card.style.transform = "";
+            });
+          });
+        });
+      }
+
+      setMusicUi();
+      syncUiHeight();
+      resetInteractiveState();
+      showStage(0);
+
+      window.addEventListener("resize", syncUiHeight, { passive: true });
+      window.addEventListener("orientationchange", syncUiHeight, { passive: true });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --vault-bg: #120d0b;
+    --vault-bg-soft: #241815;
+    --vault-bg-rich: #3b2420;
+    --vault-paper: #f2e7d7;
+    --vault-paper-strong: #f8efdf;
+    --vault-gold: #c8a86b;
+    --vault-rose: #b86a74;
+    --vault-ink: #1f1613;
+    --vault-white: #fdf7ee;
+    --vault-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+    --vault-ui-height: 78px;
+    --vault-stage-bottom-pad: 1rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(circle at top, rgba(200, 168, 107, 0.12), transparent 38%),
+      linear-gradient(180deg, #1b1310 0%, #120d0b 100%);
+    font-family: "DM Sans Variable", "DM Sans", sans-serif;
+    overflow: hidden;
+  }
+
+  body {
+    color: var(--vault-white);
+  }
+
+  button,
+  video {
+    font: inherit;
+  }
+
+  .vault-page {
+    min-height: 100dvh;
+  }
+
+  .vault-backdrop {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .vault-backdrop__mesh,
+  .vault-backdrop__grain {
+    position: absolute;
+    inset: 0;
+  }
+
+  .vault-backdrop__mesh {
+    background:
+      linear-gradient(
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px
+      );
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.6), transparent 78%);
+  }
+
+  .vault-backdrop__grain {
+    opacity: 0.08;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3) 0 0.8px, transparent 1px),
+      radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.24) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.14) 0 0.6px, transparent 1px);
+    background-size: 24px 24px;
+    mix-blend-mode: soft-light;
+  }
+
+  .vault-backdrop__orb {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(32px);
+    opacity: 0.28;
+  }
+
+  .vault-backdrop__orb--one {
+    width: 30rem;
+    height: 30rem;
+    top: -6rem;
+    left: -8rem;
+    background: rgba(200, 168, 107, 0.18);
+  }
+
+  .vault-backdrop__orb--two {
+    width: 22rem;
+    height: 22rem;
+    right: -4rem;
+    bottom: 10%;
+    background: rgba(184, 106, 116, 0.18);
+  }
+
+  .vault-root {
+    position: relative;
+    min-height: 100dvh;
+    z-index: 1;
+  }
+
+  .vault-ui {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: min(100%, 72rem);
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: calc(env(safe-area-inset-top, 0px) + 0.75rem) 1rem 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .vault-ui__actions {
+    display: flex;
+    gap: 0.75rem;
+    pointer-events: auto;
+  }
+
+  .progress-hud {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    backdrop-filter: blur(18px);
+    background: rgba(14, 10, 9, 0.52);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    pointer-events: auto;
+    transition: opacity 220ms ease, transform 220ms ease;
+    max-width: min(100%, 30rem);
+  }
+
+  .progress-hud.is-hidden {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    pointer-events: none;
+  }
+
+  .progress-hud__label {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 247, 238, 0.72);
+  }
+
+  .progress-hud__dots {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .progress-hud__dot {
+    display: inline-flex;
+    width: 0.58rem;
+    height: 0.58rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    transition:
+      transform 220ms ease,
+      background 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .progress-hud__dot.is-complete {
+    background: rgba(200, 168, 107, 0.65);
+  }
+
+  .progress-hud__dot.is-current {
+    background: var(--vault-gold);
+    box-shadow: 0 0 0 0.3rem rgba(200, 168, 107, 0.2);
+    transform: scale(1.2);
+  }
+
+  .progress-hud__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .vault-chip {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(14, 10, 9, 0.56);
+    color: var(--vault-white);
+    padding: 0.78rem 1rem;
+    backdrop-filter: blur(18px);
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition:
+      transform 220ms ease,
+      border-color 220ms ease,
+      background 220ms ease;
+  }
+
+  .vault-chip:hover,
+  .vault-chip:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(200, 168, 107, 0.58);
+    outline: none;
+  }
+
+  .vault-stage {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding:
+      calc(var(--vault-ui-height) + 0.55rem)
+      1rem
+      calc(var(--vault-stage-bottom-pad) + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    opacity: 0;
+    transform: scale(0.985) translateY(1rem);
+    pointer-events: none;
+    transition:
+      opacity 440ms ease,
+      transform 440ms ease;
+  }
+
+  .vault-stage.is-active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+
+  .vault-stage__inner {
+    width: min(100%, 72rem);
+    max-height: calc(100dvh - var(--vault-ui-height) - 1.1rem - env(safe-area-inset-bottom, 0px));
+    min-height: min(30rem, calc(100dvh - var(--vault-ui-height) - 1.1rem - env(safe-area-inset-bottom, 0px)));
+    height: auto;
+    display: grid;
+  }
+
+  .vault-stage--scrollable .vault-stage__inner {
+    height: min(54rem, calc(100dvh - var(--vault-ui-height) - 1.1rem - env(safe-area-inset-bottom, 0px)));
+  }
+
+  .intro-hero,
+  .note-card,
+  .chapter-shell,
+  .glitch-panel,
+  .finale-shell,
+  .ending-card,
+  .gallery-shell {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+      rgba(21, 15, 13, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 2rem;
+    box-shadow: var(--vault-shadow);
+    overflow: hidden;
+  }
+
+  .intro-hero::before,
+  .note-card::before,
+  .chapter-shell::before,
+  .glitch-panel::before,
+  .finale-shell::before,
+  .ending-card::before,
+  .gallery-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 40%),
+      linear-gradient(315deg, rgba(200, 168, 107, 0.08), transparent 30%);
+    pointer-events: none;
+  }
+
+  .intro-hero {
+    min-height: min(100%, 44rem);
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    padding: 0;
+  }
+
+  .intro-hero__image-wrap {
+    position: relative;
+    min-height: clamp(11rem, 36dvh, 18rem);
+    max-height: 46dvh;
+  }
+
+  .intro-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .intro-hero__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(18, 13, 11, 0.05), rgba(18, 13, 11, 0.82)),
+      radial-gradient(circle at top right, rgba(200, 168, 107, 0.22), transparent 32%);
+  }
+
+  .intro-hero__copy {
+    padding: 1.75rem 1.4rem 1rem;
+    display: grid;
+    gap: 0.85rem;
+    align-content: center;
+  }
+
+  .intro-hero__eyebrow,
+  .note-card__eyebrow,
+  .chapter-copy__eyebrow,
+  .gallery-shell__eyebrow,
+  .glitch-panel__eyebrow,
+  .finale-shell__eyebrow,
+  .ending-card__eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 247, 238, 0.66);
+  }
+
+  .intro-hero__title,
+  .note-card__title,
+  .chapter-copy__title,
+  .gallery-shell__title,
+  .glitch-panel__title,
+  .finale-shell__title,
+  .ending-card__title {
+    margin: 0;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 600;
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+  }
+
+  .intro-hero__title {
+    font-size: clamp(2.15rem, 6.2vw, 4.45rem);
+    max-width: 12ch;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .intro-hero__lede,
+  .chapter-copy__subtitle,
+  .gallery-shell__intro,
+  .glitch-panel__notice,
+  .finale-shell__subtitle,
+  .ending-card__body {
+    margin: 0;
+    color: rgba(255, 247, 238, 0.8);
+    line-height: 1.6;
+    max-width: 34ch;
+  }
+
+  .seal-button,
+  .vault-button {
+    border: none;
+    cursor: pointer;
+  }
+
+  .seal-button {
+    margin: 0 1.4rem 1.4rem;
+    padding: 1.15rem 1.35rem;
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 30% 30%, #d3b37a, #8e5d43 65%, #653628);
+    color: var(--vault-white);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow:
+      inset 0 2px 8px rgba(255, 255, 255, 0.18),
+      0 12px 30px rgba(101, 54, 40, 0.34);
+    transition: transform 220ms ease;
+  }
+
+  .seal-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.26), transparent);
+    transform: translateX(-100%);
+    animation: seal-shimmer 3s ease-in-out infinite;
+  }
+
+  .seal-button:hover,
+  .seal-button:focus-visible,
+  .vault-button:hover,
+  .vault-button:focus-visible {
+    transform: translateY(-2px) scale(1.01);
+    outline: none;
+  }
+
+  .seal-button:active,
+  .vault-button:active {
+    transform: scale(0.99);
+  }
+
+  @keyframes seal-shimmer {
+    0%,
+    75% {
+      transform: translateX(-110%);
+    }
+    100% {
+      transform: translateX(140%);
+    }
+  }
+
+  .vault-button {
+    padding: 0.95rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition:
+      transform 220ms ease,
+      background 220ms ease,
+      border-color 220ms ease,
+      color 220ms ease;
+  }
+
+  .vault-button--primary {
+    background: linear-gradient(135deg, var(--vault-gold), #b47e56);
+    color: var(--vault-ink);
+  }
+
+  .vault-button--ghost {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--vault-white);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .note-card {
+    width: min(100%, 38rem);
+    padding: 2rem 1.5rem;
+    display: grid;
+    align-content: center;
+    gap: 1.2rem;
+    text-align: left;
+  }
+
+  .note-card__title {
+    font-size: clamp(2.1rem, 8.5vw, 3.8rem);
+  }
+
+  .note-card__body {
+    display: grid;
+    gap: 1rem;
+    color: rgba(255, 247, 238, 0.86);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .chapter-shell,
+  .finale-shell {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1.3rem;
+  }
+
+  .chapter-copy {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .chapter-copy__title,
+  .gallery-shell__title,
+  .finale-shell__title,
+  .ending-card__title,
+  .glitch-panel__title {
+    font-size: clamp(2rem, 5.8vw, 3.5rem);
+    overflow-wrap: anywhere;
+  }
+
+  .video-panel {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .video-panel__frame,
+  .finale-shell__video-frame {
+    --video-aspect-ratio: 9 / 16;
+    position: relative;
+    aspect-ratio: var(--video-aspect-ratio);
+    height: min(56dvh, calc(100dvh - var(--vault-ui-height) - 13rem));
+    width: auto;
+    max-width: 100%;
+    min-height: 0;
+    border-radius: 1.6rem;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top, rgba(200, 168, 107, 0.16), transparent 40%),
+      rgba(8, 6, 6, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    justify-self: center;
+  }
+
+  .memory-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #070505;
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  .video-panel__frame.is-playing .memory-video,
+  .finale-shell__video-frame.is-playing .memory-video {
+    opacity: 1;
+  }
+
+  .video-panel__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 1rem;
+    text-align: center;
+    padding: 1.5rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.22)),
+      radial-gradient(circle at center, rgba(200, 168, 107, 0.14), transparent 48%);
+    color: rgba(255, 247, 238, 0.84);
+    transition: opacity 220ms ease;
+  }
+
+  .video-panel__frame.is-playing .video-panel__placeholder,
+  .finale-shell__video-frame.is-playing .video-panel__placeholder {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .video-panel__ring {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(200, 168, 107, 0.36);
+    box-shadow:
+      inset 0 0 0 0.55rem rgba(200, 168, 107, 0.12),
+      0 0 0 0.4rem rgba(200, 168, 107, 0.08);
+  }
+
+  .video-panel__controls,
+  .finale-shell__actions,
+  .ending-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .chapter-followup {
+    display: grid;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 1.45rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .chapter-followup__caption {
+    margin: 0;
+    color: rgba(255, 247, 238, 0.88);
+    line-height: 1.65;
+  }
+
+  .chapter-followup__stills {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  .chapter-followup__still {
+    margin: 0;
+    aspect-ratio: 0.9;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .chapter-followup__still img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-shell {
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.35rem;
+    display: grid;
+    align-content: start;
+    gap: 1.25rem;
+  }
+
+  .gallery-shell__header {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .mosaic-grid {
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .mosaic-grid--scrapbook,
+  .mosaic-grid--portrait {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mosaic-grid--fun {
+    grid-template-columns: 1fr;
+  }
+
+  .mosaic-card {
+    margin: 0;
+    position: relative;
+    padding: 0.8rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(180deg, #f4eadc, #e5d7c2);
+    color: var(--vault-ink);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+    transform: rotate(var(--card-rotation)) translateY(var(--card-shift));
+    transition: transform 240ms ease, box-shadow 240ms ease;
+  }
+
+  .mosaic-card img {
+    width: 100%;
+    height: 100%;
+    min-height: clamp(9.5rem, 30dvh, 13rem);
+    object-fit: cover;
+    display: block;
+    border-radius: 1rem;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .mosaic-card figcaption {
+    margin-top: 0.7rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+
+  .mosaic-card--wide {
+    grid-column: span 2;
+  }
+
+  .mosaic-card--tall img,
+  .mosaic-grid--portrait .mosaic-card img {
+    min-height: clamp(12rem, 34dvh, 18rem);
+  }
+
+  .mosaic-grid--portrait .mosaic-card {
+    transform: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+      rgba(24, 16, 15, 0.9);
+    color: var(--vault-white);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mosaic-grid--portrait .mosaic-card figcaption {
+    color: rgba(255, 247, 238, 0.84);
+  }
+
+  .mosaic-card--feature {
+    grid-column: span 2;
+  }
+
+  .mosaic-grid--fun .mosaic-card {
+    transform: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+      rgba(28, 19, 17, 0.9);
+    color: var(--vault-white);
+  }
+
+  .gallery-shell__footer {
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 0.35rem;
+  }
+
+  .glitch-panel,
+  .ending-card {
+    width: min(100%, 44rem);
+    padding: 1.5rem;
+    display: grid;
+    gap: 1rem;
+    text-align: center;
+    justify-items: center;
+  }
+
+  .glitch-panel__frame {
+    position: relative;
+    width: clamp(7.25rem, 18vw, 10.5rem);
+    aspect-ratio: 1;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: rgba(7, 6, 6, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glitch-panel__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    mix-blend-mode: normal;
+  }
+
+  .glitch-panel.is-blinking .glitch-panel__image,
+  .glitch-panel__image.is-visible {
+    animation: glitch-pop 350ms steps(4, end) 1 forwards;
+    opacity: 0.92;
+  }
+
+  .glitch-panel__scanline {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.14),
+        rgba(255, 255, 255, 0.02) 18%,
+        transparent 18%,
+        transparent 36%
+      );
+    background-size: 100% 12px;
+    opacity: 0.16;
+    transition: opacity 0.3s ease;
+  }
+
+  .glitch-panel.is-blinking .glitch-panel__scanline {
+    opacity: 0.5;
+    animation: scanline-scroll 0.4s linear infinite;
+  }
+
+  @keyframes scanline-scroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 12px; }
+  }
+
+  @keyframes glitch-pop {
+    0% {
+      opacity: 0;
+      transform: translate(-6px, 0) skewX(-2deg);
+      filter: contrast(1.8) saturate(2) hue-rotate(30deg);
+    }
+    25% {
+      opacity: 0.95;
+      transform: translate(5px, -1px) skewX(1.5deg);
+      filter: contrast(1.4) saturate(1.6) hue-rotate(-15deg);
+    }
+    50% {
+      opacity: 0.3;
+      transform: translate(-4px, 2px) skewX(-1deg);
+      filter: contrast(2) brightness(1.6);
+    }
+    75% {
+      opacity: 0.92;
+      transform: translate(3px, 0);
+      filter: contrast(1.2) saturate(1.2);
+    }
+    100% {
+      opacity: 0.92;
+      transform: translate(0, 0);
+      filter: none;
+    }
+  }
+
+  .finale-shell,
+  .ending-card {
+    width: min(100%, 46rem);
+  }
+
+  .finale-shell__copy {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .finale-shell__video-frame {
+    max-height: min(56dvh, calc(100dvh - var(--vault-ui-height) - 13rem));
+    width: auto;
+    margin-inline: auto;
+  }
+
+  .memory-video--final {
+    object-position: center;
+  }
+
+  .ending-card {
+    padding: 1.7rem 1.4rem;
+  }
+
+  .ending-card__body {
+    max-width: 34ch;
+    font-size: 1.06rem;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  @media (min-width: 768px) {
+    .vault-stage {
+      padding-inline: 1.5rem;
+    }
+
+    .intro-hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+      grid-template-rows: minmax(0, 1fr) auto;
+      min-height: min(100%, 42rem);
+    }
+
+    .intro-hero__image-wrap {
+      grid-row: 1 / span 2;
+      min-height: 100%;
+      max-height: none;
+    }
+
+    .intro-hero__copy {
+      align-content: center;
+      padding: 1.5rem 1.75rem 1rem;
+    }
+
+    .seal-button {
+      justify-self: start;
+      margin: 0 0 1.5rem 2rem;
+      min-width: 15rem;
+    }
+
+    .chapter-shell {
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: start;
+      gap: 1.4rem;
+      padding: 1.6rem;
+    }
+
+    .video-panel__frame {
+      max-height: min(58dvh, calc(100dvh - var(--vault-ui-height) - 12rem));
+    }
+
+    .note-card,
+    .glitch-panel,
+    .ending-card {
+      padding: 2rem;
+    }
+
+    .mosaic-grid--scrapbook,
+    .mosaic-grid--portrait {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .mosaic-card--wide,
+    .mosaic-card--feature {
+      grid-column: span 2;
+    }
+
+    .mosaic-grid--fun {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .vault-ui {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.6rem;
+    }
+
+    .vault-ui__actions {
+      justify-content: flex-end;
+    }
+
+    .progress-hud {
+      width: 100%;
+      padding: 0.72rem 0.85rem;
+    }
+
+    .vault-chip {
+      padding: 0.62rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .intro-hero__copy {
+      padding: 1.15rem 1rem 0.8rem;
+      gap: 0.6rem;
+    }
+
+    .seal-button {
+      margin: 0 1rem 1rem;
+      width: calc(100% - 2rem);
+      min-width: 0;
+      padding: 1rem 1.1rem;
+    }
+
+    .chapter-shell,
+    .finale-shell,
+    .note-card,
+    .gallery-shell,
+    .glitch-panel,
+    .ending-card {
+      border-radius: 1.4rem;
+    }
+
+    .chapter-shell,
+    .finale-shell {
+      padding: 1rem;
+      gap: 0.9rem;
+    }
+
+    .video-panel__controls,
+    .finale-shell__actions,
+    .ending-card__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .video-panel__controls .vault-button,
+    .finale-shell__actions .vault-button,
+    .ending-card__actions .vault-button {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .finale-shell__video-frame {
+      max-height: min(52dvh, calc(100dvh - var(--vault-ui-height) - 12.5rem));
+    }
+
+    .mosaic-grid--scrapbook,
+    .mosaic-grid--portrait,
+    .mosaic-grid--fun {
+      grid-template-columns: 1fr;
+    }
+
+    .mosaic-card,
+    .mosaic-grid--portrait .mosaic-card,
+    .mosaic-grid--fun .mosaic-card {
+      transform: none;
+    }
+
+    .mosaic-card--wide,
+    .mosaic-card--feature {
+      grid-column: auto;
+    }
+
+    .chapter-followup__stills {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-height: 980px) {
+    .vault-stage {
+      padding-bottom: 1rem;
+    }
+
+    .vault-stage__inner {
+      max-height: calc(100dvh - var(--vault-ui-height) - 0.75rem - env(safe-area-inset-bottom, 0px));
+    }
+
+    .vault-stage--scrollable .vault-stage__inner {
+      height: min(52rem, calc(100dvh - var(--vault-ui-height) - 0.75rem - env(safe-area-inset-bottom, 0px)));
+    }
+
+    .intro-hero__title,
+    .note-card__title,
+    .chapter-copy__title,
+    .gallery-shell__title,
+    .glitch-panel__title,
+    .finale-shell__title,
+    .ending-card__title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+    }
+  }
+
+  @media (max-height: 860px) {
+    .intro-hero {
+      min-height: min(100%, 37rem);
+    }
+
+    .intro-hero__copy {
+      gap: 0.7rem;
+    }
+
+    .intro-hero__lede,
+    .chapter-copy__subtitle,
+    .gallery-shell__intro,
+    .glitch-panel__notice,
+    .finale-shell__subtitle,
+    .ending-card__body {
+      line-height: 1.45;
+    }
+
+    .video-panel__frame,
+    .finale-shell__video-frame {
+      max-height: min(50dvh, calc(100dvh - var(--vault-ui-height) - 11rem));
+    }
+  }
+
+  @media (min-width: 768px) and (max-height: 780px) {
+    .intro-hero {
+      grid-template-columns: 0.94fr 1.06fr;
+      min-height: min(100%, 34rem);
+    }
+
+    .intro-hero__copy {
+      padding: 1.4rem 1.5rem 0.85rem;
+    }
+
+    .intro-hero__title {
+      font-size: clamp(2rem, 4.6vw, 3.3rem);
+      max-width: 10ch;
+    }
+
+    .seal-button {
+      margin: 0 0 1rem 1.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    .mosaic-card {
+      transform: none !important;
+    }
+  }
+</style>

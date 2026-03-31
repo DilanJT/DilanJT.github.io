@@ -1,0 +1,41 @@
+---
+interface Props {
+  id: string;
+  progressStep?: number;
+  showProgress?: boolean;
+  scrollable?: boolean;
+  stageClass?: string;
+  labelledBy?: string;
+}
+
+const {
+  id,
+  progressStep,
+  showProgress = true,
+  scrollable = false,
+  stageClass = "",
+  labelledBy,
+} = Astro.props;
+
+const className = [
+  "vault-stage",
+  scrollable ? "vault-stage--scrollable" : "",
+  stageClass,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<section
+  id={id}
+  class={className}
+  data-stage
+  data-progress-step={progressStep}
+  data-show-progress={showProgress ? "true" : "false"}
+  aria-labelledby={labelledBy}
+  aria-hidden="true"
+>
+  <div class="vault-stage__inner">
+    <slot />
+  </div>
+</section>

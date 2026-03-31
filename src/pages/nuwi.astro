@@ -4,13 +4,16 @@
 const LETTER_TEXT = `To my dearest Nuwi,
 
 Every moment with you feels like
-the universe conspired just for us.
+the universe planned everything just for us.
 
 You make the ordinary extraordinary,
 and the hard days so much softer.
 
 Your smile is my favourite thing
 in this whole world.
+
+You happiness with your happy face
+makes me more happier 
 
 This is just a small reminder
 of how much you mean to me...
@@ -34,14 +37,14 @@ const QUIZ = {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>For You</title>
     <link rel="preload" as="image" href="/us.JPG" />
   </head>
   <body>
-    <!-- Background music (starts on first interaction) -->
-    <audio id="bg-music" loop preload="auto" src="/music.mp3"></audio>
-
     <!-- Particle overlay -->
     <div id="particles"></div>
 
@@ -62,7 +65,10 @@ const QUIZ = {
       <div class="letter-card" id="letter-card">
         <div class="flourish">~ &#10084; ~</div>
         <div class="letter-body">
-          <span id="letter-text"></span><span id="cursor" class="typewriter-cursor">|</span>
+          <span id="letter-text"></span><span
+            id="cursor"
+            class="typewriter-cursor">|</span
+          >
         </div>
         <div id="continue-btn" class="continue-arrow hidden">
           <span>&#9660;</span>
@@ -76,9 +82,13 @@ const QUIZ = {
       <div class="quiz-card">
         <p class="quiz-question">{QUIZ.question}</p>
         <div class="quiz-options" id="quiz-options">
-          {QUIZ.options.map((option, i) => (
-            <button class="quiz-option" data-index={i}>{option}</button>
-          ))}
+          {
+            QUIZ.options.map((option, i) => (
+              <button class="quiz-option" data-index={i}>
+                {option}
+              </button>
+            ))
+          }
         </div>
         <p id="quiz-feedback" class="quiz-feedback">&nbsp;</p>
       </div>
@@ -112,7 +122,9 @@ const QUIZ = {
         </div>
       </div>
       <p class="pull-text">Swipe up on the ribbon</p>
-      <button id="tap-unwrap" class="tap-unwrap-btn">or tap here to unwrap</button>
+      <button id="tap-unwrap" class="tap-unwrap-btn"
+        >or tap here to unwrap</button
+      >
     </div>
 
     <!-- STAGE 4: Photo Reveal -->
@@ -122,16 +134,20 @@ const QUIZ = {
           <img src="/us.JPG" alt="Us" class="reveal-photo" id="reveal-photo" />
         </div>
         <h1 class="valentine-title" id="val-title">Happy Valentine's Day</h1>
-        <p class="valentine-subtitle" id="val-subtitle">I love you, Nuwi &#10084;</p>
+        <p class="valentine-subtitle" id="val-subtitle">
+          I love you, Nuwi &#10084;
+        </p>
       </div>
       <div class="heartbeat-bottom">&#10084;</div>
     </div>
 
     <!-- Hidden data for JS -->
-    <div id="app-data"
+    <div
+      id="app-data"
       data-letter={LETTER_TEXT}
       data-correct={QUIZ.correctIndex}
-      style="display:none;">
+      style="display:none;"
+    >
     </div>
 
     <style>
@@ -141,11 +157,12 @@ const QUIZ = {
         box-sizing: border-box;
       }
 
-      html, body {
+      html,
+      body {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        font-family: 'Georgia', 'Times New Roman', serif;
+        font-family: "Georgia", "Times New Roman", serif;
         background: #0d0000;
       }
 
@@ -158,7 +175,9 @@ const QUIZ = {
         align-items: center;
         justify-content: center;
         background: linear-gradient(to bottom, #1a0005, #2d0a0a, #0d0000);
-        transition: opacity 0.8s ease, transform 0.8s ease;
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
         z-index: 1;
         overflow: hidden;
       }
@@ -193,16 +212,19 @@ const QUIZ = {
           opacity: 0.4;
         }
         25% {
-          transform: translateY(-25vh) translateX(15px) rotate(10deg) scale(1.05);
+          transform: translateY(-25vh) translateX(15px) rotate(10deg)
+            scale(1.05);
         }
         50% {
-          transform: translateY(-50vh) translateX(-10px) rotate(-5deg) scale(1.1);
+          transform: translateY(-50vh) translateX(-10px) rotate(-5deg)
+            scale(1.1);
         }
         75% {
-          transform: translateY(-75vh) translateX(10px) rotate(15deg) scale(1.0);
+          transform: translateY(-75vh) translateX(10px) rotate(15deg) scale(1);
         }
         100% {
-          transform: translateY(-110vh) translateX(-5px) rotate(-10deg) scale(0.8);
+          transform: translateY(-110vh) translateX(-5px) rotate(-10deg)
+            scale(0.8);
           opacity: 0;
         }
       }
@@ -222,11 +244,13 @@ const QUIZ = {
           opacity: 1;
         }
         20% {
-          transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) rotate(calc(var(--rot) * 0.3)) scale(1.2);
+          transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3))
+            rotate(calc(var(--rot) * 0.3)) scale(1.2);
           opacity: 1;
         }
         100% {
-          transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.4);
+          transform: translate(var(--tx), var(--ty)) rotate(var(--rot))
+            scale(0.4);
           opacity: 0;
         }
       }
@@ -300,8 +324,13 @@ const QUIZ = {
       }
 
       @keyframes sealPulse {
-        0%, 100% { box-shadow: 0 0 15px rgba(255, 0, 50, 0.4); }
-        50% { box-shadow: 0 0 35px rgba(255, 0, 50, 0.8); }
+        0%,
+        100% {
+          box-shadow: 0 0 15px rgba(255, 0, 50, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 35px rgba(255, 0, 50, 0.8);
+        }
       }
 
       .inner-card {
@@ -330,8 +359,13 @@ const QUIZ = {
       }
 
       @keyframes breathe {
-        0%, 100% { opacity: 0.4; }
-        50% { opacity: 1; }
+        0%,
+        100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 1;
+        }
       }
 
       /* ===== STAGE 1: LOVE LETTER ===== */
@@ -342,7 +376,9 @@ const QUIZ = {
         background: linear-gradient(145deg, #faf3e8, #f0e4d0);
         border-radius: 16px;
         border: 2px solid #b76e79;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
         padding: 28px 24px;
         display: flex;
         flex-direction: column;
@@ -367,7 +403,9 @@ const QUIZ = {
       }
 
       @media (min-width: 768px) {
-        .letter-body { font-size: 19px; }
+        .letter-body {
+          font-size: 19px;
+        }
       }
 
       .typewriter-cursor {
@@ -377,8 +415,13 @@ const QUIZ = {
       }
 
       @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
       }
 
       .continue-arrow {
@@ -406,92 +449,185 @@ const QUIZ = {
       }
 
       @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(8px); }
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(8px);
+        }
       }
 
-      /* ===== STAGE 2: QUIZ ===== */
-      .quiz-card {
-        width: 85vw;
-        max-width: 420px;
+      /* ===== STAGE 2: COMBINATION LOCK ===== */
+      .lock-prompt {
+        color: rgba(255, 200, 200, 0.9);
+        font-size: 20px;
+        font-style: italic;
+        margin-bottom: 28px;
+        text-align: center;
+      }
+
+      .padlock {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        transition: transform 0.5s ease;
       }
 
-      .quiz-question {
-        color: rgba(255, 200, 200, 0.95);
-        font-size: 22px;
-        font-style: italic;
-        text-align: center;
-        line-height: 1.4;
+      .padlock.shake {
+        animation: shake 0.6s ease;
       }
 
-      @media (min-width: 768px) {
-        .quiz-question { font-size: 26px; }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-6px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(6px);
+        }
       }
 
-      .quiz-options {
+      .shackle {
+        width: 100px;
+        height: 50px;
+        border: 8px solid #a0895c;
+        border-bottom: none;
+        border-radius: 50px 50px 0 0;
+        margin-bottom: -4px;
+        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: bottom right;
+      }
+
+      .shackle.opened {
+        transform: translateY(-15px) rotate(-30deg);
+      }
+
+      .lock-body {
+        background: linear-gradient(to bottom, #c9a96e, #8b7355);
+        border-radius: 12px;
+        padding: 20px 16px;
+        position: relative;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .wheels-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .wheel-group {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        width: 100%;
+        align-items: center;
       }
 
-      .quiz-option {
-        background: rgba(255, 255, 255, 0.08);
-        border: 2px solid rgba(183, 110, 121, 0.4);
-        color: rgba(255, 220, 220, 0.9);
-        border-radius: 14px;
-        padding: 14px 20px;
-        font-size: 16px;
-        font-family: inherit;
-        cursor: pointer;
-        text-align: left;
-        transition: all 0.3s ease;
+      .wheel-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 11px;
+        margin-bottom: 4px;
+        font-family: sans-serif;
+        letter-spacing: 1px;
       }
 
-      .quiz-option:active {
-        transform: scale(0.97);
+      .scroll-wheel {
+        height: 144px;
+        width: 56px;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+        -webkit-overflow-scrolling: touch;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        scrollbar-width: none;
+        position: relative;
       }
 
-      .quiz-option:hover {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(183, 110, 121, 0.7);
+      .scroll-wheel::-webkit-scrollbar {
+        display: none;
       }
 
-      .quiz-option.correct {
-        background: rgba(0, 180, 80, 0.25);
-        border-color: #00b450;
-        color: #90ffb0;
-        transform: scale(1.03);
+      .wheel-padding {
+        height: 48px;
+        scroll-snap-align: center;
       }
 
-      .quiz-option.wrong {
-        background: rgba(255, 50, 50, 0.15);
-        border-color: rgba(255, 80, 80, 0.5);
-        color: rgba(255, 150, 150, 0.7);
+      .scroll-wheel-item {
+        height: 48px;
+        scroll-snap-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.35);
+        font-family: "Courier New", monospace;
+        transition:
+          color 0.15s ease,
+          transform 0.15s ease;
       }
 
-      .quiz-option.disabled {
+      .wheel-divider {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 24px;
+        font-weight: bold;
+        padding-top: 16px;
+      }
+
+      .wheel-highlight {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 48px;
+        border-top: 2px solid rgba(196, 30, 58, 0.6);
+        border-bottom: 2px solid rgba(196, 30, 58, 0.6);
         pointer-events: none;
-        opacity: 0.5;
+        z-index: 1;
       }
 
-      .quiz-feedback {
+      .hint-text {
         color: rgba(255, 150, 150, 0.8);
-        font-size: 15px;
+        font-size: 14px;
         font-style: italic;
-        min-height: 22px;
+        margin-top: 16px;
+        min-height: 20px;
         text-align: center;
         transition: opacity 0.3s ease;
       }
 
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
-        20%, 40%, 60%, 80% { transform: translateX(6px); }
+      .check-btn {
+        margin-top: 16px;
+        background: linear-gradient(135deg, #c41e3a, #8b0000);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 14px 40px;
+        font-size: 18px;
+        font-family: inherit;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(196, 30, 58, 0.4);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .check-btn:active {
+        transform: scale(0.95);
       }
 
       /* ===== STAGE 3: GIFT BOX ===== */
@@ -540,10 +676,19 @@ const QUIZ = {
         transform-origin: bottom center;
       }
 
-      .box-front.folded { transform: rotateX(85deg); opacity: 0.5; }
-      .box-back { display: none; }
-      .box-left { display: none; }
-      .box-right { display: none; }
+      .box-front.folded {
+        transform: rotateX(85deg);
+        opacity: 0.5;
+      }
+      .box-back {
+        display: none;
+      }
+      .box-left {
+        display: none;
+      }
+      .box-right {
+        display: none;
+      }
 
       .ribbon-v {
         position: absolute;
@@ -587,7 +732,7 @@ const QUIZ = {
       }
 
       .lid-face::after {
-        content: '';
+        content: "";
         position: absolute;
         left: 50%;
         top: 0;
@@ -647,7 +792,9 @@ const QUIZ = {
         cursor: grab;
         touch-action: none;
         z-index: 10;
-        transition: transform 0.3s ease, opacity 0.3s ease;
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
       }
 
       .ribbon-pull.fly-away {
@@ -668,8 +815,14 @@ const QUIZ = {
       }
 
       @keyframes ribbonFly {
-        0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(-100vh); opacity: 0; }
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh);
+          opacity: 0;
+        }
       }
 
       .pull-text {
@@ -704,7 +857,12 @@ const QUIZ = {
         width: 100px;
         height: 100px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(255, 200, 220, 0.8), rgba(255, 50, 80, 0.3), transparent);
+        background: radial-gradient(
+          circle,
+          rgba(255, 200, 220, 0.8),
+          rgba(255, 50, 80, 0.3),
+          transparent
+        );
         transform: translate(-50%, -50%) scale(0);
         z-index: 60;
         pointer-events: none;
@@ -715,9 +873,17 @@ const QUIZ = {
       }
 
       @keyframes glowExpand {
-        0% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
-        70% { opacity: 0.5; }
-        100% { transform: translate(-50%, -50%) scale(15); opacity: 0; }
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0.9;
+        }
+        70% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(15);
+          opacity: 0;
+        }
       }
 
       /* ===== STAGE 4: PHOTO REVEAL ===== */
@@ -732,7 +898,9 @@ const QUIZ = {
       .photo-frame {
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 0 40px rgba(255, 50, 80, 0.3), 0 0 80px rgba(255, 50, 80, 0.15);
+        box-shadow:
+          0 0 40px rgba(255, 50, 80, 0.3),
+          0 0 80px rgba(255, 50, 80, 0.15);
         border: 3px solid #b76e79;
         animation: photoReveal 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         opacity: 0;
@@ -747,9 +915,20 @@ const QUIZ = {
       }
 
       @keyframes photoReveal {
-        0% { opacity: 0; transform: scale(1.15); filter: brightness(2.5); }
-        40% { opacity: 1; filter: brightness(1.3); }
-        100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+        0% {
+          opacity: 0;
+          transform: scale(1.15);
+          filter: brightness(2.5);
+        }
+        40% {
+          opacity: 1;
+          filter: brightness(1.3);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: brightness(1);
+        }
       }
 
       .valentine-title {
@@ -761,7 +940,9 @@ const QUIZ = {
       }
 
       @media (min-width: 768px) {
-        .valentine-title { font-size: 36px; }
+        .valentine-title {
+          font-size: 36px;
+        }
       }
 
       .valentine-subtitle {
@@ -773,12 +954,20 @@ const QUIZ = {
       }
 
       @media (min-width: 768px) {
-        .valentine-subtitle { font-size: 24px; }
+        .valentine-subtitle {
+          font-size: 24px;
+        }
       }
 
       @keyframes fadeInUp {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .heartbeat-bottom {
@@ -788,42 +977,60 @@ const QUIZ = {
         font-size: 28px;
         animation: heartbeat 1.5s ease-in-out infinite;
         opacity: 0;
-        animation: heartbeat 1.5s ease-in-out infinite, fadeInUp 1s ease-out 2.5s both;
+        animation:
+          heartbeat 1.5s ease-in-out infinite,
+          fadeInUp 1s ease-out 2.5s both;
       }
 
       @keyframes heartbeat {
-        0%, 100% { transform: scale(1); }
-        15% { transform: scale(1.2); }
-        30% { transform: scale(1); }
-        45% { transform: scale(1.15); }
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        15% {
+          transform: scale(1.2);
+        }
+        30% {
+          transform: scale(1);
+        }
+        45% {
+          transform: scale(1.15);
+        }
       }
     </style>
 
     <script is:inline>
-      (function() {
+      (function () {
         // ===== CONFIG =====
-        const appData = document.getElementById('app-data');
-        const LETTER_TEXT = appData.getAttribute('data-letter');
-        const CORRECT_INDEX = parseInt(appData.getAttribute('data-correct'));
+        const appData = document.getElementById("app-data");
+        const LETTER_TEXT = appData.getAttribute("data-letter");
+        const CORRECT_DATE = {
+          day: parseInt(appData.getAttribute("data-day")),
+          month: parseInt(appData.getAttribute("data-month")),
+          year: parseInt(appData.getAttribute("data-year")),
+        };
 
         let currentStage = 0;
         let typewriterTimer = null;
+        let attempts = 0;
         let heartInterval = null;
 
         // ===== PARTICLE SYSTEM =====
         function createFloatingHeart() {
-          const particlesEl = document.getElementById('particles');
+          const particlesEl = document.getElementById("particles");
           if (!particlesEl) return;
-          const heart = document.createElement('div');
-          const hearts = ['\u2764', '\u2765', '\u2661'];
+          const heart = document.createElement("div");
+          const hearts = ["\u2764", "\u2765", "\u2661"];
           heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-          heart.className = 'floating-heart';
-          heart.style.left = Math.random() * 100 + 'vw';
-          heart.style.fontSize = (Math.random() * 16 + 10) + 'px';
+          heart.className = "floating-heart";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.fontSize = Math.random() * 16 + 10 + "px";
           heart.style.opacity = String(Math.random() * 0.3 + 0.15);
-          heart.style.animationDuration = (Math.random() * 6 + 7) + 's';
+          heart.style.animationDuration = Math.random() * 6 + 7 + "s";
           particlesEl.appendChild(heart);
-          heart.addEventListener('animationend', function() { heart.remove(); });
+          heart.addEventListener("animationend", function () {
+            heart.remove();
+          });
         }
 
         heartInterval = setInterval(createFloatingHeart, 900);
@@ -831,80 +1038,83 @@ const QUIZ = {
         function burstHearts(count, originX, originY) {
           if (originX === undefined) originX = window.innerWidth / 2;
           if (originY === undefined) originY = window.innerHeight / 2;
-          var particlesEl = document.getElementById('particles');
+          var particlesEl = document.getElementById("particles");
           for (var i = 0; i < count; i++) {
-            var heart = document.createElement('div');
-            heart.textContent = '\u2764';
-            heart.className = 'burst-heart';
-            heart.style.left = originX + 'px';
-            heart.style.top = originY + 'px';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
-            heart.style.setProperty('--ty', (Math.random() - 0.5) * 300 - 80 + 'px');
-            heart.style.setProperty('--rot', (Math.random() - 0.5) * 720 + 'deg');
-            heart.style.animationDelay = (Math.random() * 0.3) + 's';
+            var heart = document.createElement("div");
+            heart.textContent = "\u2764";
+            heart.className = "burst-heart";
+            heart.style.left = originX + "px";
+            heart.style.top = originY + "px";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.setProperty("--tx", (Math.random() - 0.5) * 300 + "px");
+            heart.style.setProperty(
+              "--ty",
+              (Math.random() - 0.5) * 300 - 80 + "px",
+            );
+            heart.style.setProperty(
+              "--rot",
+              (Math.random() - 0.5) * 720 + "deg",
+            );
+            heart.style.animationDelay = Math.random() * 0.3 + "s";
             particlesEl.appendChild(heart);
-            heart.addEventListener('animationend', function() { this.remove(); });
+            heart.addEventListener("animationend", function () {
+              this.remove();
+            });
           }
         }
 
         // ===== STAGE TRANSITIONS =====
         function transitionToStage(newStage) {
-          var stages = ['stage-0', 'stage-1', 'stage-2', 'stage-3', 'stage-4'];
+          var stages = ["stage-0", "stage-1", "stage-2", "stage-3", "stage-4"];
           var current = document.getElementById(stages[currentStage]);
           var next = document.getElementById(stages[newStage]);
 
-          current.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-          current.style.opacity = '0';
-          current.style.transform = 'scale(0.95)';
+          current.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+          current.style.opacity = "0";
+          current.style.transform = "scale(0.95)";
 
-          setTimeout(function() {
-            current.style.display = 'none';
-            current.classList.add('hidden');
-            next.classList.remove('hidden');
-            next.style.display = 'flex';
-            next.style.opacity = '0';
-            next.style.transform = 'scale(1.03)';
+          setTimeout(function () {
+            current.style.display = "none";
+            current.classList.add("hidden");
+            next.classList.remove("hidden");
+            next.style.display = "flex";
+            next.style.opacity = "0";
+            next.style.transform = "scale(1.03)";
             // Force reflow
             void next.offsetHeight;
-            next.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-            next.style.opacity = '1';
-            next.style.transform = 'scale(1)';
+            next.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+            next.style.opacity = "1";
+            next.style.transform = "scale(1)";
             currentStage = newStage;
 
             if (newStage === 1) initTypewriter();
-            if (newStage === 2) initQuiz();
+            if (newStage === 2) initScrollWheels();
           }, 700);
         }
 
         // ===== STAGE 0: ENVELOPE =====
         (function initEnvelope() {
-          var envelope = document.getElementById('envelope');
-          var seal = document.getElementById('seal');
-          var flap = document.getElementById('flap');
-          var card = document.getElementById('card');
+          var envelope = document.getElementById("envelope");
+          var seal = document.getElementById("seal");
+          var flap = document.getElementById("flap");
+          var card = document.getElementById("card");
           var tapped = false;
 
-          envelope.addEventListener('click', function() {
+          envelope.addEventListener("click", function () {
             if (tapped || currentStage !== 0) return;
             tapped = true;
 
-            // Start background music on first interaction
-            var music = document.getElementById('bg-music');
-            music.volume = 0.4;
-            music.play().catch(function() {});
+            seal.classList.add("cracked");
 
-            seal.classList.add('cracked');
-
-            setTimeout(function() {
-              flap.classList.add('opened');
+            setTimeout(function () {
+              flap.classList.add("opened");
             }, 400);
 
-            setTimeout(function() {
-              card.classList.add('risen');
+            setTimeout(function () {
+              card.classList.add("risen");
             }, 1100);
 
-            setTimeout(function() {
+            setTimeout(function () {
               transitionToStage(1);
             }, 2200);
           });
@@ -912,18 +1122,18 @@ const QUIZ = {
 
         // ===== STAGE 1: TYPEWRITER =====
         function initTypewriter() {
-          var textEl = document.getElementById('letter-text');
-          var cursor = document.getElementById('cursor');
-          var continueBtn = document.getElementById('continue-btn');
-          var letterCard = document.getElementById('letter-card');
+          var textEl = document.getElementById("letter-text");
+          var cursor = document.getElementById("cursor");
+          var continueBtn = document.getElementById("continue-btn");
+          var letterCard = document.getElementById("letter-card");
           var i = 0;
           var done = false;
 
           function showContinue() {
             if (done) return;
             done = true;
-            cursor.style.display = 'none';
-            continueBtn.classList.remove('hidden');
+            cursor.style.display = "none";
+            continueBtn.classList.remove("hidden");
           }
 
           function typeChar() {
@@ -939,8 +1149,9 @@ const QUIZ = {
           typeChar();
 
           // Tap to skip
-          letterCard.addEventListener('click', function skipHandler(e) {
-            if (e.target === continueBtn || continueBtn.contains(e.target)) return;
+          letterCard.addEventListener("click", function skipHandler(e) {
+            if (e.target === continueBtn || continueBtn.contains(e.target))
+              return;
             if (done) return;
             clearTimeout(typewriterTimer);
             textEl.textContent = LETTER_TEXT;
@@ -948,61 +1159,118 @@ const QUIZ = {
           });
 
           // Continue button
-          continueBtn.addEventListener('click', function() {
+          continueBtn.addEventListener("click", function () {
             transitionToStage(2);
           });
         }
 
-        // ===== STAGE 2: QUIZ =====
-        function initQuiz() {
-          var options = document.querySelectorAll('.quiz-option');
-          var feedback = document.getElementById('quiz-feedback');
-          var answered = false;
+        // ===== STAGE 2: COMBINATION LOCK =====
+        function initScrollWheels() {
+          var wheels = ["day-wheel", "month-wheel", "year-wheel"];
+          wheels.forEach(function (id) {
+            var wheel = document.getElementById(id);
+            // Scroll to a random position initially
+            wheel.scrollTop = 0;
+          });
 
-          options.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-              if (answered) return;
-              var index = parseInt(btn.getAttribute('data-index'));
-
-              if (index === CORRECT_INDEX) {
-                // Correct!
-                answered = true;
-                btn.classList.add('correct');
-                feedback.textContent = 'You know me so well!';
-                feedback.style.color = '#90ffb0';
-
-                // Disable all other options
-                options.forEach(function(o) {
-                  if (o !== btn) o.classList.add('disabled');
-                });
-
-                var rect = btn.getBoundingClientRect();
-                burstHearts(40, rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-                setTimeout(function() {
-                  transitionToStage(3);
-                }, 1800);
-              } else {
-                // Wrong
-                btn.classList.add('wrong');
-                btn.style.animation = 'shake 0.5s ease';
-                feedback.textContent = 'Hmm, try again my love...';
-                feedback.style.color = 'rgba(255, 150, 150, 0.8)';
-
-                // Reset after a moment
-                setTimeout(function() {
-                  btn.classList.remove('wrong');
-                  btn.style.animation = '';
-                  btn.classList.add('disabled');
-                }, 800);
-              }
+          // Highlight active items on scroll
+          wheels.forEach(function (id) {
+            var wheel = document.getElementById(id);
+            wheel.addEventListener("scroll", function () {
+              updateWheelHighlight(wheel);
             });
+            updateWheelHighlight(wheel);
           });
         }
 
+        function updateWheelHighlight(wheel) {
+          var items = wheel.querySelectorAll(".scroll-wheel-item");
+          var center = wheel.scrollTop + wheel.clientHeight / 2;
+          items.forEach(function (item) {
+            var itemCenter = item.offsetTop + item.offsetHeight / 2;
+            var distance = Math.abs(center - itemCenter);
+            if (distance < 24) {
+              item.style.color = "white";
+              item.style.transform = "scale(1.15)";
+            } else if (distance < 60) {
+              item.style.color = "rgba(255,255,255,0.55)";
+              item.style.transform = "scale(1)";
+            } else {
+              item.style.color = "rgba(255,255,255,0.25)";
+              item.style.transform = "scale(0.9)";
+            }
+          });
+        }
+
+        function getWheelValue(wheelId) {
+          var wheel = document.getElementById(wheelId);
+          var items = wheel.querySelectorAll(".scroll-wheel-item");
+          var center = wheel.scrollTop + wheel.clientHeight / 2;
+          var closest = null;
+          var closestDist = Infinity;
+          items.forEach(function (item) {
+            var itemCenter = item.offsetTop + item.offsetHeight / 2;
+            var dist = Math.abs(center - itemCenter);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closest = item;
+            }
+          });
+          return closest ? parseInt(closest.getAttribute("data-value")) : -1;
+        }
+
+        // Check button
+        document
+          .getElementById("check-btn")
+          .addEventListener("click", function () {
+            var day = getWheelValue("day-wheel");
+            var month = getWheelValue("month-wheel");
+            var year = getWheelValue("year-wheel");
+            var padlock = document.getElementById("padlock");
+            var hintEl = document.getElementById("hint-text");
+
+            if (
+              day === CORRECT_DATE.day &&
+              month === CORRECT_DATE.month &&
+              year === CORRECT_DATE.year
+            ) {
+              // Success!
+              document.getElementById("shackle").classList.add("opened");
+              document.getElementById("check-btn").style.display = "none";
+              hintEl.textContent = "";
+
+              var rect = padlock.getBoundingClientRect();
+              burstHearts(
+                40,
+                rect.left + rect.width / 2,
+                rect.top + rect.height / 2,
+              );
+
+              setTimeout(function () {
+                transitionToStage(3);
+              }, 1800);
+            } else {
+              // Wrong
+              attempts++;
+              padlock.classList.add("shake");
+              setTimeout(function () {
+                padlock.classList.remove("shake");
+              }, 600);
+
+              if (attempts >= 3) {
+                hintEl.textContent =
+                  "Hint: it was in 20" + CORRECT_DATE.year + "...";
+              } else if (attempts >= 2) {
+                hintEl.textContent = "Close... think about today's date";
+              } else {
+                hintEl.textContent = "Not quite... try again, my love";
+              }
+            }
+          });
+
         // ===== STAGE 3: GIFT BOX =====
         (function initGiftBox() {
-          var ribbonPull = document.getElementById('ribbon-pull');
+          var ribbonPull = document.getElementById("ribbon-pull");
           var dragStartY = 0;
           var isDragging = false;
           var unwrapped = false;
@@ -1011,103 +1279,122 @@ const QUIZ = {
             if (unwrapped) return;
             unwrapped = true;
 
-            ribbonPull.classList.add('fly-away');
+            ribbonPull.classList.add("fly-away");
 
-            setTimeout(function() {
-              document.getElementById('lid').classList.add('opened');
+            setTimeout(function () {
+              document.getElementById("lid").classList.add("opened");
             }, 400);
 
-            setTimeout(function() {
-              var scene = document.getElementById('gift-scene');
+            setTimeout(function () {
+              var scene = document.getElementById("gift-scene");
               var rect = scene.getBoundingClientRect();
-              burstHearts(60, rect.left + rect.width / 2, rect.top + rect.height / 2);
-              document.querySelector('.box-front').classList.add('folded');
+              burstHearts(
+                60,
+                rect.left + rect.width / 2,
+                rect.top + rect.height / 2,
+              );
+              document.querySelector(".box-front").classList.add("folded");
             }, 900);
 
             // Glow overlay
-            setTimeout(function() {
-              var glow = document.createElement('div');
-              glow.className = 'glow-overlay';
+            setTimeout(function () {
+              var glow = document.createElement("div");
+              glow.className = "glow-overlay";
               document.body.appendChild(glow);
               void glow.offsetHeight;
-              glow.classList.add('expanding');
-              glow.addEventListener('animationend', function() { glow.remove(); });
+              glow.classList.add("expanding");
+              glow.addEventListener("animationend", function () {
+                glow.remove();
+              });
             }, 1300);
 
             // Preload image
             var img = new Image();
-            img.src = '/us.JPG';
+            img.src = "/us.JPG";
 
-            setTimeout(function() {
+            setTimeout(function () {
               transitionToStage(4);
             }, 2500);
           }
 
           // Touch events for swipe
-          ribbonPull.addEventListener('touchstart', function(e) {
-            if (unwrapped) return;
-            dragStartY = e.touches[0].clientY;
-            isDragging = true;
-          }, { passive: true });
+          ribbonPull.addEventListener(
+            "touchstart",
+            function (e) {
+              if (unwrapped) return;
+              dragStartY = e.touches[0].clientY;
+              isDragging = true;
+            },
+            { passive: true },
+          );
 
-          ribbonPull.addEventListener('touchmove', function(e) {
-            if (!isDragging || unwrapped) return;
-            e.preventDefault();
-            var deltaY = dragStartY - e.touches[0].clientY;
-            if (deltaY > 0) {
-              var progress = Math.min(deltaY / 150, 1);
-              ribbonPull.style.transform = 'translateY(-' + (deltaY * 0.6) + 'px)';
-              ribbonPull.style.opacity = String(1 - progress * 0.5);
-            }
-          }, { passive: false });
+          ribbonPull.addEventListener(
+            "touchmove",
+            function (e) {
+              if (!isDragging || unwrapped) return;
+              e.preventDefault();
+              var deltaY = dragStartY - e.touches[0].clientY;
+              if (deltaY > 0) {
+                var progress = Math.min(deltaY / 150, 1);
+                ribbonPull.style.transform =
+                  "translateY(-" + deltaY * 0.6 + "px)";
+                ribbonPull.style.opacity = String(1 - progress * 0.5);
+              }
+            },
+            { passive: false },
+          );
 
-          ribbonPull.addEventListener('touchend', function(e) {
+          ribbonPull.addEventListener("touchend", function (e) {
             if (!isDragging || unwrapped) return;
             isDragging = false;
             var deltaY = dragStartY - e.changedTouches[0].clientY;
             if (deltaY > 120) {
               doUnwrap();
             } else {
-              ribbonPull.style.transform = '';
-              ribbonPull.style.opacity = '';
+              ribbonPull.style.transform = "";
+              ribbonPull.style.opacity = "";
             }
           });
 
           // Mouse events for desktop
-          ribbonPull.addEventListener('mousedown', function(e) {
+          ribbonPull.addEventListener("mousedown", function (e) {
             if (unwrapped) return;
             dragStartY = e.clientY;
             isDragging = true;
             e.preventDefault();
           });
 
-          document.addEventListener('mousemove', function(e) {
+          document.addEventListener("mousemove", function (e) {
             if (!isDragging || unwrapped) return;
             var deltaY = dragStartY - e.clientY;
             if (deltaY > 0) {
-              ribbonPull.style.transform = 'translateY(-' + (deltaY * 0.6) + 'px)';
-              ribbonPull.style.opacity = String(1 - Math.min(deltaY / 150, 1) * 0.5);
+              ribbonPull.style.transform =
+                "translateY(-" + deltaY * 0.6 + "px)";
+              ribbonPull.style.opacity = String(
+                1 - Math.min(deltaY / 150, 1) * 0.5,
+              );
             }
           });
 
-          document.addEventListener('mouseup', function(e) {
+          document.addEventListener("mouseup", function (e) {
             if (!isDragging || unwrapped) return;
             isDragging = false;
             var deltaY = dragStartY - e.clientY;
             if (deltaY > 120) {
               doUnwrap();
             } else {
-              ribbonPull.style.transform = '';
-              ribbonPull.style.opacity = '';
+              ribbonPull.style.transform = "";
+              ribbonPull.style.opacity = "";
             }
           });
 
           // Tap fallback button
-          document.getElementById('tap-unwrap').addEventListener('click', function() {
-            doUnwrap();
-          });
+          document
+            .getElementById("tap-unwrap")
+            .addEventListener("click", function () {
+              doUnwrap();
+            });
         })();
-
       })();
     </script>
   </body>

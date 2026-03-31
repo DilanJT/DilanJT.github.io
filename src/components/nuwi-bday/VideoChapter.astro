@@ -1,0 +1,88 @@
+---
+import type { MemoryChapter } from "../../data/nuwi-bday";
+import VaultStage from "./VaultStage.astro";
+
+interface Props {
+  chapter: MemoryChapter;
+  index: number;
+  progressStep: number;
+}
+
+const { chapter, index, progressStep } = Astro.props;
+const stageId = `vault-memory-${index + 1}`;
+const titleId = `${stageId}-title`;
+const videoId = `${stageId}-video`;
+---
+
+<VaultStage
+  id={stageId}
+  progressStep={progressStep}
+  stageClass="vault-stage--video"
+  labelledBy={titleId}
+>
+  <div class="chapter-shell">
+    <div class="chapter-copy">
+      <p class="chapter-copy__eyebrow">Memory {String(index + 1).padStart(2, "0")}</p>
+      <h2 class="chapter-copy__title" id={titleId}>{chapter.title}</h2>
+      <p class="chapter-copy__subtitle">{chapter.subtitle}</p>
+    </div>
+
+    <div class="video-panel" data-video-stage>
+      <div class="video-panel__frame" data-video-shell>
+        <div class="video-panel__placeholder">
+          <span class="video-panel__ring"></span>
+          <p>This memory has sound. Tap when you're ready.</p>
+        </div>
+        <video
+          id={videoId}
+          class="memory-video"
+          playsinline
+          controls
+          preload="none"
+          data-src={chapter.videoSrc}
+          aria-label={chapter.title}
+        ></video>
+      </div>
+
+      <div class="video-panel__controls">
+        <button
+          class="vault-button vault-button--primary"
+          type="button"
+          data-play-video
+          data-default-cta
+          aria-controls={videoId}
+        >
+          Play with sound
+        </button>
+        <button
+          class="vault-button vault-button--ghost"
+          type="button"
+          data-skip-video
+          aria-controls={videoId}
+        >
+          Skip for now
+        </button>
+      </div>
+
+      <div class="chapter-followup" data-video-followup hidden>
+        <p class="chapter-followup__caption">{chapter.caption}</p>
+        <div class="chapter-followup__stills">
+          {
+            chapter.supportingImages.map((src, imageIndex) => (
+              <figure class="chapter-followup__still">
+                <img
+                  src={src}
+                  alt={`${chapter.title} supporting memory ${imageIndex + 1}`}
+                  loading="lazy"
+                />
+              </figure>
+            ))
+          }
+        </div>
+        <button class="vault-button vault-button--primary" type="button" data-next-stage>
+          Next memory
+        </button>
+      </div>
+    </div>
+  </div>
+</VaultStage>

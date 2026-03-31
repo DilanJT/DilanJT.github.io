@@ -1,0 +1,78 @@
+---
+import type { GallerySection } from "../../data/nuwi-bday";
+import VaultStage from "./VaultStage.astro";
+
+interface Props {
+  stageId: string;
+  progressStep: number;
+  section: GallerySection;
+  variant: "scrapbook" | "portrait" | "fun";
+}
+
+const { stageId, progressStep, section, variant } = Astro.props;
+const titleId = `${stageId}-title`;
+const cardRotations = ["-4deg", "2.5deg", "-1.5deg", "3deg", "-2.5deg", "1deg"];
+const cardOffsets = [
+  "0px",
+  "18px",
+  "-10px",
+  "12px",
+  "-16px",
+  "8px",
+];
+---
+
+<VaultStage
+  id={stageId}
+  progressStep={progressStep}
+  scrollable={true}
+  stageClass={`vault-stage--gallery vault-stage--gallery-${variant}`}
+  labelledBy={titleId}
+>
+  <div class={`gallery-shell gallery-shell--${variant}`}>
+    <div class="gallery-shell__header">
+      <p class="gallery-shell__eyebrow">
+        {variant === "scrapbook"
+          ? "Scrapbook"
+          : variant === "portrait"
+            ? "Birthday Girl"
+            : "Intermission"}
+      </p>
+      <h2 id={titleId} class="gallery-shell__title">{section.title}</h2>
+      <p class="gallery-shell__intro">{section.intro}</p>
+    </div>
+
+    <div
+      class={`mosaic-grid mosaic-grid--${variant}`}
+      data-parallax-grid={variant === "fun" ? "false" : "true"}
+    >
+      {
+        section.images.map((image, index) => {
+          const cardClass = [
+            "mosaic-card",
+            variant === "scrapbook" && index % 5 === 0 ? "mosaic-card--wide" : "",
+            variant === "scrapbook" && index % 4 === 2 ? "mosaic-card--tall" : "",
+            variant === "portrait" && index === 0 ? "mosaic-card--feature" : "",
+            variant === "fun" && index === 0 ? "mosaic-card--wide" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          const style = `--card-rotation: ${cardRotations[index % cardRotations.length]}; --card-shift: ${cardOffsets[index % cardOffsets.length]}; --card-depth: ${1 + (index % 4)};`;
+
+          return (
+            <figure class={cardClass} style={style}>
+              <img src={image.src} alt={image.alt} loading="lazy" />
+              {image.caption && <figcaption>{image.caption}</figcaption>}
+            </figure>
+          );
+        })
+      }
+    </div>
+
+    <div class="gallery-shell__footer">
+      <button class="vault-button vault-button--primary" type="button" data-next-stage data-default-cta>
+        Continue
+      </button>
+    </div>
+  </div>
+</VaultStage>

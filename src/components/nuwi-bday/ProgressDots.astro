@@ -1,0 +1,23 @@
+---
+interface Props {
+  labels: string[];
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="progress-hud" data-progress-root aria-live="polite">
+  <div class="progress-hud__label" data-progress-label>
+    {labels[0]}
+  </div>
+  <ol class="progress-hud__dots">
+    {
+      labels.map((label, index) => (
+        <li class="progress-hud__item">
+          <span class="progress-hud__sr">{label}</span>
+          <span class="progress-hud__dot" data-progress-dot={index}></span>
+        </li>
+      ))
+    }
+  </ol>
+</div>
